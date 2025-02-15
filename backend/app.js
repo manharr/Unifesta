@@ -17,31 +17,28 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: '*', // Allow requests from any domain (for testing)
+    origin: '*', 
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+// Middlewares
+app.use("/user", userRouter);
+app.use("/admin", adminRouter);
+app.use("/event", eventRouter);
+app.use("/booking", bookingsRouter);
+app.use("/college", collegeRouter);
+app.use("/subevent", subEventRouter);
+app.use("/api/payments", PaymentRouter);
+app.use("/upload", uploadRouter); // Cloudinary image upload route
 
-//middlewares
-app.use("/user",userRouter);
-app.use("/admin",adminRouter);
-app.use("/event",eventRouter);
-app.use("/booking",bookingsRouter);
-app.use("/college",collegeRouter);
-app.use("/subevent",subEventRouter);
-app.use("/api/payments", PaymentRouter); 
-app.get("/", (req, res)=>{
-    // res.send("server is ready!") 
+// Root endpoint
+app.get("/", (req, res) => {
+    // res.send("Server is running!");
 });
 
-app.use("/upload", uploadRouter);
-app.use("/uploads", express.static("uploads")); 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => {
     connectDB();
     console.log(`Server running on port ${PORT}`);
 });
-
-
-// 
