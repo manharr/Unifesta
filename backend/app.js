@@ -16,7 +16,7 @@ const app = express();
 app.use(express.json());
 
 app.use(cors({
-      origin: 'http://localhost:3000', // Replace with your frontend URL
+    origin: process.env.FRONTEND_URL || "http://localhost:3000",
 
 }));
 
@@ -34,9 +34,10 @@ app.get("/", (req, res)=>{
 
 app.use("/upload", uploadRouter);
 app.use("/uploads", express.static("uploads")); 
-app.listen(5000, () =>{
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
     connectDB();
-    console.log('Server started at http://localhost:5000 hello')
-})
+    console.log(`Server running on port ${PORT}`);
+});
 
 // 
