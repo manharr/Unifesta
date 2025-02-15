@@ -24,8 +24,11 @@ const EventCards = ({ events, isUpcoming }) => {  // Accept isUpcoming prop
             <CardMedia
               component="img"
               height="220"
-              image={event.images[0]}
-              alt={event.title}
+              image={
+                event.images[0]?.startsWith("http")
+                  ? event.images[0] // Already full URL
+                  : `http://localhost:5000${event.images[0]}` // Append backend URL if needed
+              }              alt={event.title}
               sx={{ objectFit: "cover", borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
             />
 
