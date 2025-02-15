@@ -10,15 +10,18 @@ import collegeRouter from './routes/college-routes.js';
 import subEventRouter from './routes/subevent-routes.js';
 import uploadRouter from './routes/upload-routes.js';
 import PaymentRouter from './routes/payment-routes.js';
+
 dotenv.config();
 
 const app = express();
 app.use(express.json());
 
 app.use(cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
-
+    origin: '*', // Allow requests from any domain (for testing)
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
 
 //middlewares
 app.use("/user",userRouter);
@@ -35,9 +38,10 @@ app.get("/", (req, res)=>{
 app.use("/upload", uploadRouter);
 app.use("/uploads", express.static("uploads")); 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     connectDB();
     console.log(`Server running on port ${PORT}`);
 });
+
 
 // 
