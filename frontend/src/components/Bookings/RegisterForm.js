@@ -130,7 +130,7 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
     
                 // Now open the Razorpay payment gateway
                 const options = {
-                    key: "rzp_test_z3yR89BoU8AMms",  // Replace with your Razorpay key
+                    key: process.env.RAZORPAY_KEY_ID,  // Replace with your Razorpay key
                     amount: razorpayOrder.amount,  // The order amount in paise
                     currency: razorpayOrder.currency,
                     name: "UniFesta", // You can set the event or company name here
