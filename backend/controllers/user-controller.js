@@ -41,29 +41,53 @@ export const signup = async (req, res, next) => {
     }
 };
 
+export const getUserById = async (req, res) => {
+    const { id } = req.params;
+    // console.log(`Fetching user with ID: ${id}`); // Debugging
+
+    try {
+        const user = await User.findById(id).select("-password"); // Exclude password for security
+        if (!user) {
+            console.log("User not found");
+            return res.status(404).json({ message: "User not found" });
+        }
+        // console.log("User found:", user);
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 
-export const updateUser = async(req, res, next) =>{
-    const id=req.params.id;
+export const updateUser = async (req, res) => {
+    const { id } = req.params; // Fix param name
+    const { name, email, password } = req.body;
 
-    const {name, email, password} = req.body;
     if (!name || !email || !password) {
         return res.status(422).json({ message: "Invalid inputs" });
     }
-    
 
-    const hashedPassword=bcrypt.hashSync(password);
-    let user;
     try {
-        user = await User.findByIdAndUpdate(id, {name, email, password: hashedPassword});
-    } catch(err){
-        return console.log(err);
+        const hashedPassword = bcrypt.hashSync(password, 10); // Add salt rounds for security
+
+        const user = await User.findByIdAndUpdate(
+            id,  // Fix parameter usage
+            { name, email, password: hashedPassword },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "Updated successfully", user });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Something went wrong" });
     }
-    if(!user){
-        return res.status(500).json({message: "Something went wrong"});
-    }
-    res.status(200).json({message:"Updated successfully"});
 };
+
 
 
 export const deleteUser = async(req,res,next)=>{

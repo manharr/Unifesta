@@ -138,8 +138,9 @@ export const updateEvent = async (req, res, next) => {
         maxParticipants,
         isFeatured,
         eventStatus,
-        sponsors, 
-        coordinatorsContact 
+        sponsors,
+        coordinatorsContact,
+        images, // Ensure images are included in the request body
     } = req.body;
 
     try {
@@ -154,8 +155,9 @@ export const updateEvent = async (req, res, next) => {
                 maxParticipants,
                 isFeatured,
                 eventStatus,
-                sponsors, 
-                coordinatorsContact 
+                sponsors,
+                coordinatorsContact,
+                images, // ✅ Update images field
             },
             { new: true }
         );
@@ -170,6 +172,7 @@ export const updateEvent = async (req, res, next) => {
         return res.status(500).json({ message: "Failed to update event" });
     }
 };
+
 
 
 export const deleteEvent = async (req, res, next) => {
