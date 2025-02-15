@@ -79,6 +79,39 @@ export const deleteUser = async (id, token) => {
 };
 
 
+export const getUserById = async (userId) => {
+  try {
+      const response = await axios.get(`/user/${userId}`);
+      return response.data;
+  } catch (err) {
+      console.error("API error in getUserById:", err);
+      throw err;
+  }
+};
+
+
+
+
+export const updateUser = async (id, userData) => {
+  try {
+      const res = await axios.put(`/user/${id}`, {
+          name: userData.name,
+          email: userData.email,
+          password: userData.password || "defaultPassword", // Provide a default if needed
+      });
+
+      if (res.status !== 200) {
+          throw new Error("Failed to update user");
+      }
+
+      return res.data;
+  } catch (err) {
+      console.error("Error updating user:", err.response?.data || err.message);
+      throw err;
+  }
+};
+
+
 
 // booking/registration 
 export const newBooking = async (bookingData) => {
@@ -198,7 +231,7 @@ export const addEvent = async (eventData) => {
 export const uploadImage = async (formData) => {
   try {
     const res = await axios.post("/upload", formData, {
-      headers: { "Content-Type": "multipart/form-data" }, 
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
     if (res.status !== 201) {

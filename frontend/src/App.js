@@ -30,6 +30,7 @@ import ManageUsers from "./components/Admin/ManageUsers";
 import ManageReg from "./components/Admin/ManageReg";
 import UserBookings from "./components/Bookings/UserBookings";
 import SuccessPage from "./components/Bookings/SuccessPage";
+import UserProfile from "./components/Bookings/UserProfile";
 
 const theme = createTheme({
   typography: {
@@ -77,6 +78,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/bookings" element={<UserBookings />} />
             <Route path="/success" element={<SuccessPage />} />
+            <Route path="/user/:id" element={<UserProfile />} />
             <Route
               path="/admin/dashboard"
               element={

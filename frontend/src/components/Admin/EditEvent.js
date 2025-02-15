@@ -98,9 +98,9 @@ const EditEvent = () => {
     }
   
     try {
-      let imageUrls = eventData.images;
+      let imageUrls = eventData.images; // Default to existing images
   
-      // Upload new images if files are selected
+      // If new images are uploaded, replace old images
       if (imageFiles.length > 0) {
         const uploadPromises = imageFiles.map(async (file) => {
           const formData = new FormData();
@@ -109,17 +109,16 @@ const EditEvent = () => {
           return response.imageUrl;
         });
   
-        const uploadedImages = await Promise.all(uploadPromises);
-        imageUrls = [...imageUrls, ...uploadedImages];
+        imageUrls = await Promise.all(uploadPromises); // Completely replace images
       }
   
       // Update event with new images and other data
       await updateEventDetails(id, { ...eventData, images: imageUrls });
   
-      // Update state to reflect the new images
+      // Update state to reflect new images
       setEventData((prevState) => ({
         ...prevState,
-        images: imageUrls, // Ensuring the state is updated with new image URLs
+        images: imageUrls, // Now replacing images properly
       }));
   
       setSnackbarMessage("Event updated successfully!");
@@ -134,6 +133,7 @@ const EditEvent = () => {
       setOpenSnackbar(true);
     }
   };
+  
 
   return (
     <Box sx={{ display: "flex", height: "100vh", bgcolor: "#F5F5F5" }}>

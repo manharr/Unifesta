@@ -2,7 +2,8 @@ import React from "react";
 import { Card, CardMedia, CardContent, Typography, Grid, Button, Box } from "@mui/material";
 import { Link } from "react-router-dom";
 
-const EventCards = ({ events, isUpcoming }) => {  // Accept isUpcoming prop
+const EventCards = ({ events, isUpcoming }) => {  
+  // Accept isUpcoming prop
   return (
     <Grid container spacing={3} justifyContent="center" sx={{ mt: 3 }}>
       {events.map((event, index) => (
@@ -28,7 +29,8 @@ const EventCards = ({ events, isUpcoming }) => {  // Accept isUpcoming prop
                 event.images[0]?.startsWith("http")
                   ? event.images[0] // Already full URL
                   : `http://localhost:5000${event.images[0]}` // Append backend URL if needed
-              }              alt={event.title}
+              }               
+              alt={event.title}
               sx={{ objectFit: "cover", borderTopLeftRadius: 4, borderTopRightRadius: 4 }}
             />
 
