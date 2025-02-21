@@ -31,7 +31,7 @@ const Footer = () => {
         </Grid>
 
         {/* Quick Links */}
-        <Grid item xs={6} md={2} ml={-3}>
+        {/* <Grid item xs={6} md={2} ml={-3}>
           <Typography variant="h6" fontWeight="bold" color="#FFD700" gutterBottom>
             Quick Links
           </Typography>
@@ -44,7 +44,7 @@ const Footer = () => {
               </Link>
             ))}
           </Box>
-        </Grid>
+        </Grid> */}
 
         {/* Resources */}
         <Grid item xs={6} md={2}>
