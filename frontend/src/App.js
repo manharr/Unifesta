@@ -78,7 +78,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/bookings" element={<UserBookings />} />
             <Route path="/success" element={<SuccessPage />} />
-            <Route path="/user/:id" element={<UserProfile />} />
+            <Route path="/profile" element={<UserProfile />} />
             <Route
               path="/admin/dashboard"
               element={
@@ -192,6 +192,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            
             <Route path="/auth" element={<Auth />} />
             <Route path="/event/:id" element={<Booking />} />
           </Routes>

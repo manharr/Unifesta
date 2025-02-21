@@ -98,6 +98,7 @@ export const updateUser = async (id, userData) => {
           name: userData.name,
           email: userData.email,
           password: userData.password || "defaultPassword", // Provide a default if needed
+          ...(userData.contactNumber && { contactNumber: userData.contactNumber }) // Include only if provided
       });
 
       if (res.status !== 200) {
