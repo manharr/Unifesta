@@ -83,9 +83,11 @@ const ViewSubevents = () => {
                 <Grid item xs={12} key={subEvent._id}>
                   <Paper sx={{ p: 3, border: "1px solid #ddd", borderRadius: "8px", boxShadow: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                      {subEvent.type} - {subEvent.description}
+                      {subEvent.type} - {subEvent.description} 
                     </Typography>
-
+                    <Typography variant="body1" sx={{ fontWeight: "bold", mt: 1, color: "#555" }}>
+                      <strong>Venue:</strong> {subEvent.venue || "Not specified"}
+                    </Typography>
                     {/* Sub-Event Details */}
                     {subEvent.details?.length > 0 ? (
                       subEvent.details.map((detail, detailIndex) => (
@@ -120,7 +122,6 @@ const ViewSubevents = () => {
                           <Typography variant="body2" sx={{ fontWeight: "bold", mt: 1, color: subEvent.registrationStatus === "ON" ? "success.main" : "error.main" }}>
                             Registration Status: {subEvent.registrationStatus === "ON" ? "OPEN" : "CLOSED"}
                           </Typography>
-
                         </Box>
                       ))
                     ) : (

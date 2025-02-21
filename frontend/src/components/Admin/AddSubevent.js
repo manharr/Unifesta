@@ -25,6 +25,7 @@ const AddSubevent = () => {
     event: eventId,
     type: "",
     description: "",
+    venue: "",
     registrationStatus: true,
     details: [
       {
@@ -77,8 +78,8 @@ const AddSubevent = () => {
   };
 
   const handleSubmit = async () => {
-    if (!subEventData.type.trim() || !subEventData.description.trim()) {
-      setSnackbarMessage("Type and Description are required!");
+    if (!subEventData.type.trim() || !subEventData.description.trim() || !subEventData.venue.trim()) {
+      setSnackbarMessage("Type, Description, and Venue are required!");
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
       return;
@@ -167,6 +168,17 @@ const AddSubevent = () => {
                 multiline
                 rows={2}
                 value={subEventData.description}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Venue"
+                name="venue"
+                variant="outlined"
+                value={subEventData.venue}
                 onChange={handleChange}
               />
             </Grid>

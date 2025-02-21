@@ -4,6 +4,7 @@ import { getEventDetails, getSubEventsByEvent } from "../../api-helpers/api-help
 import { Card, CardContent, CardMedia, Typography, Button, Box, Grid, Container, Paper, Divider, Snackbar, Alert } from "@mui/material";
 import { useSelector } from "react-redux";
 import RegisterForm from "./RegisterForm";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 
 const Booking = () => {
   const [event, setEvent] = useState(null);
@@ -219,40 +220,179 @@ const Booking = () => {
               >
                 📍 Location: <span style={{ color: "#81C784", fontWeight: "bold" }}>{event.location}</span>
               </Typography>
-            </Grid>
-          </Grid>
+
+              
+          {/* Event Rules Section */}
+          {event.rules && (
+            <Box
+              sx={{
+                position: "relative",
+                mt: 2,
+                cursor: "pointer",
+                "&:hover .rules-content": {
+                  opacity: 1,
+                  visibility: "visible",
+                  transform: "translateY(0)",
+                },
+              }}
+            >
+              {/* Hover Trigger */}
+              <Box
+                sx={{
+                  bgcolor: "#FF0000", // Bold, pure red
+                  p: 1.5,
+                  borderRadius: "8px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  boxShadow: "0px 2px 8px rgba(255, 0, 0, 0.3)", // Subtle red shadow
+                  transition: "all 0.3s ease",
+                  "&:hover": {
+                    bgcolor: "#CC0000", // Darker red on hover
+                  },
+                }}
+              >
+                <Typography
+                  variant="body1"
+                  sx={{
+                    fontWeight: "700",
+                    color: "#FFFFFF", // White text for contrast
+                    fontFamily: "'Inter', sans-serif",
+                  }}
+                >
+                  Rules
+                </Typography>
+                <Box
+                  sx={{
+                    width: "24px",
+                    height: "24px",
+                    bgcolor: "#2A2A2A", // Dark background for the icon
+                    borderRadius: "50%",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#FF0000", // Bold red accent for the icon
+                    fontSize: "0.9rem",
+                    fontWeight: "700",
+                  }}
+                >
+                  ?
+                </Box>
+              </Box>
+
+              {/* Hidden Rules Content */}
+              <Box
+                className="rules-content"
+                sx={{
+                  position: "absolute",
+                  top: "110%", // Slightly lower for a floating effect
+                  left: 0,
+                  bgcolor: "#1E1E1E", // Darker background for contrast
+                  p: 2,
+                  borderRadius: "12px", // Slightly larger border radius
+                  boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.6)", // Deeper shadow for depth
+                  mt: 1,
+                  opacity: 0,
+                  visibility: "hidden",
+                  transform: "translateY(-10px)",
+                  transition: "all 0.3s ease",
+                  zIndex: 1,
+                  width: "340px", // Slightly wider for better readability
+                  border: "1px solid rgba(255, 0, 0, 0.2)", // Subtle red border
+                }}
+              >
+                {/* Map through the rules array and display each rule with a divider */}
+                {event.rules.map((rule, index) => (
+                  <Box key={index}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "flex-start",
+                        gap: 1.5,
+                        mb: 2, // Margin bottom for spacing
+                      }}
+                    >
+                      {/* Rule Icon */}
+                      <Box
+                        sx={{
+                          width: "24px",
+                          height: "24px",
+                          bgcolor: "#FF0000", // Red icon background
+                          borderRadius: "6px", // Slightly rounded corners
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          color: "#FFFFFF", // White icon color
+                          fontSize: "0.9rem",
+                          fontWeight: "700",
+                          flexShrink: 0, // Prevent icon from shrinking
+                          boxShadow: "0px 2px 6px rgba(255, 0, 0, 0.4)",
+                        }}
+                      >
+                        {index + 1}
+                      </Box>
+                      {/* Rule Text */}
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: "#E0E0E0", // Light text for readability
+                          lineHeight: 1.6,
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        {rule}
+                      </Typography>
+                    </Box>
+                    {/* Add a divider after each rule except the last one */}
+                    {index !== event.rules.length - 1 && (
+                      <Divider
+                        sx={{
+                          my: 1.5, // Margin top and bottom
+                          bgcolor: "rgba(255, 255, 255, 0.1)", // Subtle white divider
+                        }}
+                      />
+                    )}
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+          )}
+        </Grid>
+      </Grid>
+            
 
           {/* Sub-Events Section */}
           <Typography
-  variant="h4"
-  color="#BB86FC"
-  sx={{
-    mt: 6,
-    mb: 4,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontFamily: "'Inter', sans-serif",
-  }}
->
-  Explore
-</Typography>
+            variant="h4"
+            color="#BB86FC"
+            sx={{
+              mt: 6,
+              mb: 4,
+              textAlign: "center",
+              fontWeight: "bold",
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            Explore
+          </Typography>
 
-<Grid
-  container
-  spacing={3}
-  sx={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "stretch",
-    width: "100%",
-    mt: 3,
-  }}
->
-  {subEvents.length > 0 ? (
-    subEvents.map((subEvent) => (
-      <Grid item xs={12} sm={6} md={6} key={subEvent._id}>
-        <Card
-          sx={{
+      <Grid
+        container
+        spacing={3}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "stretch",
+          width: "100%",
+          mt: 3,
+        }}
+      >
+      {subEvents.length > 0 ? (
+        subEvents.map((subEvent) => (
+          <Grid item xs={12} sm={6} md={6} key={subEvent._id}>
+            <Card
+              sx={{
             background: "linear-gradient(135deg, #1E1E1E 30%, #2A2A2A 100%)", // Added gradient
             borderRadius: "12px",
             boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.4)",
@@ -294,6 +434,50 @@ const Booking = () => {
             >
               {subEvent.description}
             </Typography>
+            
+ 
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#F8FAFC",
+                lineHeight: 1.45,
+                textAlign: "center",
+                fontFamily: "'Inter', sans-serif",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 0.7, // Balanced spacing
+                background: "linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(17, 24, 39, 0.9))",
+                p: 1.0, // Medium padding
+                borderRadius: "7px", // Slightly rounded corners
+                border: "1px solid rgba(255, 255, 255, 0.14)", // Subtle border
+                boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)", // Soft but noticeable shadow
+                width: "fit-content",
+                maxWidth: "78%",
+                mx: "auto",
+                backdropFilter: "blur(9px)", // Light blur for a smooth UI
+                transition: "all 0.25s ease-in-out",
+                "&:hover": {
+                  boxShadow: "0px 5px 12px rgba(0, 0, 0, 0.35)",
+                  background: "linear-gradient(135deg, rgba(30, 41, 59, 0.92), rgba(17, 24, 39, 1))",
+                },
+              }}
+            >
+              <LocationOnOutlinedIcon sx={{ fontSize: 17, color: "#0EA5E9" }} /> {/* Medium Icon */}
+              <Box
+                component="span"
+                sx={{
+                  fontWeight: 550,
+                  fontSize: "13px", // Medium text
+                  color: "#E2E8F0",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.45px",
+                }}
+              >
+                {subEvent.venue || "Venue to be announced"}
+              </Box>
+          </Typography>
+
 
             <Divider sx={{ bgcolor: "#444", my: 2 }} />
 
@@ -534,6 +718,100 @@ const Booking = () => {
           Loading event details...
         </Typography>
       )}
+
+{/* COORDINATORS CONTACT INFO */}
+{event && event.coordinatorsContact && event.coordinatorsContact.length > 0 && (
+  <Box
+    mt={4}
+    sx={{
+      background: "linear-gradient(135deg, #0F0F0F, #1A1A1A)",
+      p: 4,
+      borderRadius: 3,
+      boxShadow: "0px 6px 18px rgba(0, 0, 0, 0.3)",
+      width: "100%",  // Takes full width
+      maxWidth: "1200px", // Constrains it to a reasonable max size
+      mx: "auto",
+    }}
+  >
+    <Typography
+      variant="h5"
+      gutterBottom
+      sx={{
+        color: "#FFFFFF",
+        fontWeight: 700,
+        fontFamily: "'Inter', sans-serif",
+        mb: 3,
+        textAlign: "center",
+        textTransform: "uppercase",
+        letterSpacing: 1.1,
+        fontSize: "22px",
+      }}
+    >
+      Event Co-ordinator
+    </Typography>
+
+    <Grid container spacing={3} justifyContent="center">
+      {event.coordinatorsContact.map((coordinator, index) => (
+        <Grid item xs={12} sm={6} md={4} key={index}> {/* Adjusting layout for responsiveness */}
+          <Paper
+            elevation={4}
+            sx={{
+              p: 3,
+              borderRadius: 2,
+              background: "linear-gradient(145deg, #1E1E1E, #252525)",
+              transition: "transform 0.3s, box-shadow 0.3s",
+              "&:hover": {
+                transform: "translateY(-4px)",
+                boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.35)",
+              },
+            }}
+          >
+            <Typography
+              variant="h6"
+              sx={{
+                color: "#BB86FC",
+                fontWeight: 600,
+                fontFamily: "'Inter', sans-serif",
+                mb: 1,
+                textTransform: "capitalize",
+                fontSize: "1.1rem",
+              }}
+            >
+              {coordinator.name}
+            </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                color: "#E0E0E0",
+                fontFamily: "'Inter', sans-serif",
+                fontSize: "0.95rem",
+              }}
+            >
+               Number: {coordinator.phone}
+            </Typography>
+          </Paper>
+        </Grid>
+      ))}
+    </Grid>
+
+    {/* Compact Footer-like Element */}
+    <Box
+      mt={4}
+      sx={{
+        textAlign: "center",
+        color: "#A0A0A0",
+        fontSize: "0.85rem",
+        fontFamily: "'Inter', sans-serif",
+        borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+        pt: 2,
+        opacity: 0.8,
+      }}
+    >
+      Need help? Contact the coordinators above.
+    </Box>
+  </Box>
+)}
+
     </Container>
   );
 };

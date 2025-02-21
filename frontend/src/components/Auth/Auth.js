@@ -24,11 +24,11 @@ const Auth = () => {
         localStorage.setItem("userId", data.id);
 
         if (isSignup) {
-            setMessage("✅ Signed up successfully!");
+            setMessage("Signed up successfully!");
         } else {
-            setMessage("✅ Logged in successfully!");
+            setMessage("Logged in successfully!");
         }
-
+        // ✅
         setMessageType("success");
         setShowProgress(true);
 

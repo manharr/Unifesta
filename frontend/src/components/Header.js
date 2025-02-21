@@ -30,7 +30,7 @@ const Header = () => {
   const isAdminLoggedIn = useSelector((state) => state.admin.isLoggedIn);
   const isUserLoggedIn = useSelector((state) => state.user.isLoggedIn);
   const userProfile = useSelector((state) => state.user.profile);
-  const userId = useSelector((state) => state.user.userId); // Get userId from Redux
+  // const userId = useSelector((state) => state.user.userId); // Get userId from Redux
 
   const [value, setValue] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -204,7 +204,7 @@ const Header = () => {
 
                     <MenuItem
                       component={Link}
-                      to={`/user/${userId}`} // Use userId from Redux
+                      to="/profile" // Use userId from Redux
                       onClick={handleCloseMenu}
                       sx={{
                         "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
@@ -304,7 +304,7 @@ const Header = () => {
               {/* User Logged In Options */}
               {isUserLoggedIn && !isAdminLoggedIn && (
                 <>
-                  <ListItem button component={Link} to="/user" onClick={() => setDrawerOpen(false)}>
+                  <ListItem button component={Link} to="/profile" onClick={() => setDrawerOpen(false)}>
                     <ListItemText primary="Profile" sx={{ color: "#ffcc00" }} />
                   </ListItem>
                   <ListItem button component={Link} to="/bookings" onClick={() => setDrawerOpen(false)}>

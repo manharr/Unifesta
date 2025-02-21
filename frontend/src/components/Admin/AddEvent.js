@@ -15,7 +15,9 @@ import {
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { addEvent, getAllColleges, uploadImage } from "../../api-helpers/api-helpers";
-
+const PRESET_RULES = [
+  "Each participant must carry a valid college ID."
+];
 const AddEvent = () => {
   const navigate = useNavigate();
   const [eventData, setEventData] = useState({
@@ -31,6 +33,8 @@ const AddEvent = () => {
     sponsors: [],
     eventStatus: "Upcoming",
     coordinatorsContact: [{ name: "", phone: "" }],
+    rules: PRESET_RULES, 
+
   });
 
   const [colleges, setColleges] = useState([]);

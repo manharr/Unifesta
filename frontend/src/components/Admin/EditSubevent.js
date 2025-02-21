@@ -25,6 +25,7 @@ const EditSubevent = () => {
     event: "",
     type: "",
     description: "",
+    venue: "", // Added Venue field
     registrationStatus: "OFF",
     details: [
       {
@@ -70,16 +71,6 @@ const EditSubevent = () => {
     setSubEventData({ ...subEventData, details: updatedDetails });
   };
 
-  const handleAddDetail = () => {
-    setSubEventData({
-      ...subEventData,
-      details: [
-        ...subEventData.details,
-        { gameTitle: "", date: "", time: "", entryFee: 0, maxParticipants: 0, registeredParticipants: 0 },
-      ],
-    });
-  };
-
   const handleToggleRegistration = () => {
     setSubEventData({
       ...subEventData,
@@ -88,8 +79,8 @@ const EditSubevent = () => {
   };
 
   const handleSubmit = async () => {
-    if (!subEventData.type.trim() || !subEventData.description.trim()) {
-      setSnackbarMessage("Type and Description cannot be empty!");
+    if (!subEventData.type.trim() || !subEventData.description.trim() || !subEventData.venue.trim()) {
+      setSnackbarMessage("Type, Description, and Venue cannot be empty!");
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
       return;
@@ -155,6 +146,18 @@ const EditSubevent = () => {
                 multiline
                 rows={2}
                 value={subEventData.description}
+                onChange={handleChange}
+              />
+            </Grid>
+
+            {/* Venue Field */}
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Venue"
+                name="venue"
+                variant="outlined"
+                value={subEventData.venue}
                 onChange={handleChange}
               />
             </Grid>
@@ -228,7 +231,6 @@ const EditSubevent = () => {
                   </Grid>
                 </Grid>
               ))}
-              {subEventData.type === "Gaming" && <Button onClick={handleAddDetail}>Add Detail</Button>}
             </Grid>
 
             <Grid item xs={12}>

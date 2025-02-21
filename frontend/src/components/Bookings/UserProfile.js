@@ -17,7 +17,7 @@ const UserProfile = () => {
   const [profile, setProfile] = useState({
     name: "",
     email: "",
-    contact: "",
+    contactNumber: "",
   });
   const [error, setError] = useState("");
 
@@ -40,7 +40,7 @@ const UserProfile = () => {
             setProfile({
                 name: userData.name,
                 email: userData.email,
-                contact: userData.contact || "+91", // Default if not provided
+                contactNumber: userData.contactNumber || "+91", // Default if not provided
             });
         } catch (err) {
             console.error("Error fetching user details:", err);
@@ -56,8 +56,9 @@ const UserProfile = () => {
   const handleSave = async () => {
     try {
         const updatedProfile = {
-            ...profile,
-            password: profile.password || "defaultPassword123", // Provide a default
+            name: profile.name,
+            email: profile.email,
+            ...(profile.contactNumber && { contactNumber: profile.contactNumber }), // Update only if provided
         };
 
         await updateUser(userId, updatedProfile);
@@ -66,7 +67,8 @@ const UserProfile = () => {
     } catch (err) {
         setError("Failed to update profile. Please try again.");
     }
-};
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prev) => ({ ...prev, [name]: value }));
@@ -96,7 +98,6 @@ const UserProfile = () => {
         overflow: "hidden",
       }}
     >
-      {/* Background Overlay */}
       <Box
         sx={{
           position: "absolute",
@@ -137,7 +138,7 @@ const UserProfile = () => {
         <CardContent>
           {isEditing ? (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-              {["name", "email", "contact"].map((field) => (
+              {["name", "email", "contactNumber"].map((field) => (
                 <TextField
                   key={field}
                   label={field.charAt(0).toUpperCase() + field.slice(1)}
@@ -171,10 +172,10 @@ const UserProfile = () => {
                 {profile.email}
               </Typography>
               <Typography variant="h6" color="#BB86FC" sx={{ fontWeight: "bold", mt: 2 }}>
-                Contact
+                Contact Number
               </Typography>
               <Typography variant="body1" color="#E0E0E0">
-                {profile.contact}
+                {profile.contactNumber}
               </Typography>
             </Box>
           )}

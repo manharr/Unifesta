@@ -15,6 +15,7 @@ const HomePage = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
+    document.title = "UniFesta"
     getAllEvents()
       .then((data) => setEvents(data.events))
       .catch((err) => console.error("Error fetching events:", err));

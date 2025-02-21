@@ -11,7 +11,12 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
+  List,
+  ListItem,
+  IconButton
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { getEventDetails, updateEventDetails, uploadImage } from "../../api-helpers/api-helpers";
@@ -32,6 +37,8 @@ const EditEvent = () => {
     sponsors: [],
     eventStatus: "",
     coordinatorsContact: [{ name: "", phone: "" }],
+    rules: [],
+
   });
 
   const [imageFiles, setImageFiles] = useState([]);
@@ -98,7 +105,7 @@ const EditEvent = () => {
     }
   
     try {
-      let imageUrls = eventData.images; // Default to existing images
+      let imageUrls = eventData.images; 
   
       // If new images are uploaded, replace old images
       if (imageFiles.length > 0) {
@@ -132,6 +139,25 @@ const EditEvent = () => {
       setSnackbarSeverity("error");
       setOpenSnackbar(true);
     }
+  };
+  const handleRuleChange = (index, value) => {
+    const updatedRules = [...eventData.rules];
+    updatedRules[index] = value;
+    setEventData({ ...eventData, rules: updatedRules });
+  };
+
+  const handleAddRule = () => {
+    setEventData({ ...eventData, rules: [...eventData.rules, ""] });
+  };
+  const handleDeleteRule = (index) => {
+    const updatedRules = eventData.rules.filter((_, i) => i !== index);
+    setEventData({ ...eventData, rules: updatedRules });
+  };
+  const handleDeleteCoordinator = (index) => {
+    setEventData((prevData) => ({
+      ...prevData,
+      coordinatorsContact: prevData.coordinatorsContact.filter((_, i) => i !== index),
+    }));
   };
   
 
@@ -199,32 +225,57 @@ const EditEvent = () => {
               ))}
               <Button onClick={handleAddSponsor}>Add Sponsor</Button>
             </Grid>
-
             <Grid item xs={12}>
-              <Typography variant="subtitle1">Coordinators:</Typography>
-              {eventData.coordinatorsContact.map((contact, index) => (
-                <Grid container spacing={2} key={index} sx={{ mb: 2 }}>
-                    <Grid item xs={6}>
+              <Typography variant="subtitle1">Rules:</Typography>
+              <List>
+                {eventData.rules.map((rule, index) => (
+                  <ListItem key={index} secondaryAction={
+                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteRule(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  }>
                     <TextField
-                        fullWidth
-                        label="Coordinator Name"
-                        value={contact.name}
-                        onChange={(e) => handleCoordinatorChange(index, "name", e.target.value)}
+                      fullWidth
+                      label={`Rule ${index + 1}`}
+                      value={rule}
+                      onChange={(e) => handleRuleChange(index, e.target.value)}
                     />
-                    </Grid>
-                    <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label="Contact Number"
-                        type="tel"
-                        value={contact.phone}
-                        onChange={(e) => handleCoordinatorChange(index, "phone", e.target.value)}
-                    />
-                    </Grid>
-                </Grid>
-                
+                  </ListItem>
                 ))}
-              <Button onClick={handleAddCoordinator}>Add Coordinator</Button>
+              </List>
+              <Button onClick={handleAddRule}>Add Rule</Button>
+            </Grid>
+            
+            <Grid item xs={12}>
+            <Typography variant="subtitle1">Coordinators:</Typography>
+{eventData.coordinatorsContact.map((contact, index) => (
+  <Grid container spacing={2} key={index} sx={{ mb: 2, alignItems: "center" }}>
+    <Grid item xs={5}>
+      <TextField
+        fullWidth
+        label="Coordinator Name"
+        value={contact.name}
+        onChange={(e) => handleCoordinatorChange(index, "name", e.target.value)}
+      />
+    </Grid>
+    <Grid item xs={5}>
+      <TextField
+        fullWidth
+        label="Contact Number"
+        type="tel"
+        value={contact.phone}
+        onChange={(e) => handleCoordinatorChange(index, "phone", e.target.value)}
+      />
+    </Grid>
+    <Grid item xs={2}>
+      <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteCoordinator(index)}>
+        <DeleteIcon />
+      </IconButton>
+    </Grid>
+  </Grid>
+))}
+<Button onClick={handleAddCoordinator}>Add Coordinator</Button>
+
             </Grid>
 
             <Grid item xs={12}>
