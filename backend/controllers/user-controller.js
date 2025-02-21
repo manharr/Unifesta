@@ -61,21 +61,28 @@ export const getUserById = async (req, res) => {
 
 
 export const updateUser = async (req, res) => {
-    const { id } = req.params; // Fix param name
-    const { name, email, password } = req.body;
+    const { id } = req.params;
+    const { name, email, password, contactNumber } = req.body;
 
     if (!name || !email || !password) {
         return res.status(422).json({ message: "Invalid inputs" });
     }
 
     try {
-        const hashedPassword = bcrypt.hashSync(password, 10); // Add salt rounds for security
+        const hashedPassword = bcrypt.hashSync(password, 10);
 
-        const user = await User.findByIdAndUpdate(
-            id,  // Fix parameter usage
-            { name, email, password: hashedPassword },
-            { new: true }
-        );
+        const updatedData = {
+            name,
+            email,
+            password: hashedPassword,
+        };
+
+        // Only update contactNumber if provided
+        if (contactNumber) {
+            updatedData.contactNumber = contactNumber;
+        }
+
+        const user = await User.findByIdAndUpdate(id, updatedData, { new: true });
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -87,7 +94,6 @@ export const updateUser = async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 };
-
 
 
 export const deleteUser = async(req,res,next)=>{

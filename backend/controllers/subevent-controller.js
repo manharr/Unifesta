@@ -19,9 +19,9 @@ export const addSubEvent = async (req, res, next) => {
         }
     });
 
-    const { event, type, description, details } = req.body;
+    const { event, type, description, venue, details } = req.body;
 
-    if (!event || !type || !description || !Array.isArray(details) || details.length === 0) {
+    if (!event || !type || !description || !venue || !Array.isArray(details) || details.length === 0) {
         return res.status(422).json({ message: "Invalid inputs" });
     }
 
@@ -30,7 +30,6 @@ export const addSubEvent = async (req, res, next) => {
             return res.status(400).json({ message: "Date and Time are required for each sub-event detail" });
         }
 
-        // Ensure gameTitle is required for Gaming sub-events
         if (type === "Gaming" && !detail.gameTitle) {
             return res.status(400).json({ message: "Game title is required for gaming sub-events" });
         }
@@ -38,7 +37,6 @@ export const addSubEvent = async (req, res, next) => {
 
     let newSubEvent;
     try {
-        // Validate event existence
         const existingEvent = await Event.findById(event);
         if (!existingEvent) {
             return res.status(404).json({ message: "Event not found" });
@@ -48,6 +46,7 @@ export const addSubEvent = async (req, res, next) => {
             event,
             type,
             description,
+            venue,
             details,
         });
 
@@ -138,15 +137,13 @@ export const updateSubEvent = async (req, res, next) => {
     }
 
     const subEventId = req.params.id;
-    const { type, description, details, registrationStatus } = req.body;
+    const { type, description, venue, details, registrationStatus } = req.body;
 
-    // Ensure required fields are provided for all sub-events
     for (const detail of details) {
         if (!detail.date || !detail.time) {
             return res.status(400).json({ message: "Date and Time are required for each sub-event detail" });
         }
 
-        // Ensure gameTitle is required for Gaming sub-events
         if (type === "Gaming" && !detail.gameTitle) {
             return res.status(400).json({ message: "Game title is required for gaming sub-events" });
         }
@@ -156,7 +153,7 @@ export const updateSubEvent = async (req, res, next) => {
     try {
         updatedSubEvent = await SubEvent.findByIdAndUpdate(
             subEventId,
-            { type, description, details, registrationStatus },
+            { type, description, venue, details, registrationStatus },
             { new: true }
         );
     } catch (err) {
@@ -169,6 +166,7 @@ export const updateSubEvent = async (req, res, next) => {
 
     return res.status(200).json({ message: "Sub-event updated successfully", subEvent: updatedSubEvent });
 };
+
 
 
 // Delete a sub-event and remove its reference from the Event model

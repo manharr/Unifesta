@@ -94,45 +94,40 @@ export const getCollegeById = async (req, res, next) => {
 };
 
 export const updateCollege = async (req, res, next) => {
-    try {
-        // Extract token
-        const extractedToken = req.headers.authorization?.split(" ")[1];
+    const extractedToken = req.headers.authorization.split(" ")[1];
+    if (!extractedToken || extractedToken.trim() === "") {
+        return res.status(404).json({ message: "Token not found" });
+    }
 
-        if (!extractedToken) {
-            return res.status(404).json({ message: "Token not found" });
-        }
-
-        // Verify token and get admin ID
-        let adminId;
-        try {
-            const decrypted = jwt.verify(extractedToken, process.env.SECRET_KEY);
-            adminId = decrypted.id;
-        } catch (err) {
+    let adminId;
+    jwt.verify(extractedToken, process.env.SECRET_KEY, (err, decrypted) => {
+        if (err) {
             return res.status(400).json({ message: `${err.message}` });
+        } else {
+            adminId = decrypted.id;
         }
+    });
 
-        // Get college ID and update data
-        const collegeId = req.params.id;
-        const { name, location, description } = req.body;
+    const collegeId = req.params.id;
+    const { name, location, description } = req.body;
 
-        const updatedCollege = await College.findByIdAndUpdate(
+    let updatedCollege;
+    try {
+        updatedCollege = await College.findByIdAndUpdate(
             collegeId,
             { name, location, description },
             { new: true } 
         );
-
-        if (!updatedCollege) {
-            return res.status(404).json({ message: "College not found" });
-        }
-
-        return res.status(200).json({ message: "College updated successfully", college: updatedCollege });
-
     } catch (err) {
-        console.error("Error updating college:", err);
-        return res.status(500).json({ message: "Internal server error", error: err.message });
+        return res.status(500).json({ message: "Updating college failed", error: err.message });
     }
-};
 
+    if (!updatedCollege) {
+        return res.status(404).json({ message: "College not found" });
+    }
+
+    return res.status(200).json({ message: "College updated successfully", college: updatedCollege });
+};
 export const deleteCollege = async (req, res, next) => {
     const extractedToken = req.headers.authorization?.split(" ")[1];  
     

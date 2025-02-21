@@ -14,6 +14,10 @@ const subEventSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    venue: { 
+        type: String, 
+        required: true, 
+    },
     registrationStatus: {
         type: String,
         enum: ["ON", "OFF"],

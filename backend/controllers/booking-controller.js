@@ -12,13 +12,22 @@ export const newBooking = async (req, res, next) => {
         existingEvent = await Event.findById(event);
         existingUser = await User.findById(user);
         existingSubEvent = await SubEvent.findById(subEvent);
+
+        if (!existingSubEvent) {
+            return res.status(404).json({ message: "Sub-event not found" });
+        }
+
+        // ✅ Ensure venue exists (to avoid database errors)
+        if (!existingSubEvent.venue) {
+            existingSubEvent.venue = "Default Venue"; // Set a fallback value
+            await existingSubEvent.save(); // Save only if venue was missing
+        }
     } catch (err) {
         return res.status(500).json({ message: "Error fetching event/user/subEvent", error: err.message });
     }
 
     if (!existingEvent) return res.status(404).json({ message: "Event not found" });
     if (!existingUser) return res.status(404).json({ message: "User not found" });
-    if (!existingSubEvent) return res.status(404).json({ message: "Sub-event not found" });
 
     let booking;
     try {
@@ -116,11 +125,17 @@ export const getBookingsByUser = async (req, res, next) => {
 
     try {
         const bookings = await Bookings.find({ user: userId })
-            .populate("event", "title") // Populate event title
+            .populate({
+                path: "event",
+                select: "title college", 
+                populate: { path: "college", select: "name" } 
+
+            })            
             .populate({
                 path: "subEvent",
-                select: "type description details", // Include details in the response
+                select: "type description details venue", // Include details in the response
             });
+            
 
         if (!bookings.length) {
             return res.status(404).json({ message: "No bookings found for this user" });

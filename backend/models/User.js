@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         minLength: 6,
     },
+    contactNumber: {
+        type: String, 
+        default: null,
+    },
     bookings:[{type: mongoose.Types.ObjectId, ref:"Booking"}],
 });
 

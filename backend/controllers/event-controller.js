@@ -22,7 +22,7 @@ export const addEvent = async (req, res) => {
         const {
             title, startDate, endDate, description, college,
             location, maxParticipants, isFeatured, images,
-            sponsors, coordinatorsContact 
+            sponsors, coordinatorsContact, rules
         } = req.body;
 
         if (!title || !startDate || !endDate || !description || !college || !location) {
@@ -45,7 +45,9 @@ export const addEvent = async (req, res) => {
                 maxParticipants: maxParticipants || 0,
                 isFeatured: isFeatured || false,
                 sponsors: sponsors || [], 
-                coordinatorsContact: coordinatorsContact || [] 
+                coordinatorsContact: coordinatorsContact || [] ,
+                rules: rules || []
+
             });
 
             await newEvent.save({ session });
@@ -140,7 +142,8 @@ export const updateEvent = async (req, res, next) => {
         eventStatus,
         sponsors,
         coordinatorsContact,
-        images, // Ensure images are included in the request body
+        images,
+        rules  // Ensure images are included in the request body
     } = req.body;
 
     try {
@@ -157,7 +160,8 @@ export const updateEvent = async (req, res, next) => {
                 eventStatus,
                 sponsors,
                 coordinatorsContact,
-                images, // ✅ Update images field
+                images,
+                rules  
             },
             { new: true }
         );
