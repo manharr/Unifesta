@@ -14,6 +14,20 @@ import PaymentRouter from './routes/payment-routes.js';
 dotenv.config();
 
 const app = express();
+
+
+app.use((req, res, next) => {
+    // If maintenance mode is enabled, block all requests
+    if (process.env.MAINTENANCE_MODE === 'true') {
+      // console.log('Maintenance mode is ON'); // Debugging log
+      return res.status(503).send('The site is under maintenance. Please try again later.');
+    }
+  //   console.log('Maintenance mode is OFF'); // Debugging log
+    next();
+  });
+
+
+
 app.use(express.json());
 
 app.use(cors({
