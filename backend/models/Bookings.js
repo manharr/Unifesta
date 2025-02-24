@@ -45,7 +45,9 @@ const bookingSchema = new mongoose.Schema({
 
 bookingSchema.pre("save", function (next) {
     if (!this.ticketNumber) {
-        this.ticketNumber = `TICKET-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+        const shortTime = Date.now().toString().slice(-4); 
+        const randomStr = Math.random().toString(36).substring(2, 6).toUpperCase(); 
+        this.ticketNumber = `${shortTime}${randomStr}`;
     }
     next();
 });
