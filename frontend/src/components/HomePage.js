@@ -22,8 +22,12 @@ const HomePage = () => {
   }, []);
 
   const eventBanners = [
+    // "/banner.png",
+    "/unifesta2.png",
     "https://media.licdn.com/dms/image/v2/D4D1EAQHSsAsYoMHOEA/event-background-image-crop_720_1280/event-background-image-crop_720_1280/0/1671284860648?e=2147483647&v=beta&t=C5D3bl-TGxBZ1JrdRTcSYJDiojPTf1SpUl0wm7cbF2Y",
-    "https://i.ytimg.com/vi/_TM9ROHi3j0/sddefault.jpg"
+    // "https://i.ytimg.com/vi/_TM9ROHi3j0/sddefault.jpg",
+    // "/banner.png",
+    // "/unifesta.jpg",
   ];
 
   const settings = {
