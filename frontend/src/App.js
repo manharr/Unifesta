@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom"; // Import useLocation
+import { Route, Routes, useLocation } from "react-router-dom"; 
 import { Box } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -31,6 +31,11 @@ import ManageReg from "./components/Admin/ManageReg";
 import UserBookings from "./components/Bookings/UserBookings";
 import SuccessPage from "./components/Bookings/SuccessPage";
 import UserProfile from "./components/Bookings/UserProfile";
+import Reports from "./components/Admin/Reports";
+import ManageSponsors from "./components/Admin/ManageSponsors";
+import AddSponsor from "./components/Admin/AddSponsor";
+import ViewSponsors from "./components/Admin/ViewSponsor";
+import EditSponsor from "./components/Admin/EditSponsor";
 
 const theme = createTheme({
   typography: {
@@ -189,6 +194,46 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ManageReg />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/reports"
+              element={
+                <ProtectedRoute>
+                  <Reports />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/sponsors"
+              element={
+                <ProtectedRoute>
+                  <ManageSponsors />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/add-sponsor/:eventId"
+              element={
+                <ProtectedRoute>
+                  <AddSponsor />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/view-sponsor/:eventId"
+              element={
+                <ProtectedRoute>
+                  <ViewSponsors />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/edit-sponsor/:id"
+              element={
+                <ProtectedRoute>
+                  <EditSponsor />
                 </ProtectedRoute>
               }
             />

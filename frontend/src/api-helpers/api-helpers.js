@@ -97,8 +97,8 @@ export const updateUser = async (id, userData) => {
       const res = await axios.put(`/user/${id}`, {
           name: userData.name,
           email: userData.email,
-          password: userData.password || "defaultPassword", // Provide a default if needed
-          ...(userData.contactNumber && { contactNumber: userData.contactNumber }) // Include only if provided
+          password: userData.password || "defaultPassword",  
+          ...(userData.contactNumber && { contactNumber: userData.contactNumber }) 
       });
 
       if (res.status !== 200) {
@@ -155,7 +155,7 @@ export const deleteBooking = async (id) => {
 export const getUserBookings = async (userId) => {
   try {
     const res = await axios.get(`/booking/user/${userId}`);
-    return res.data; // Return data as we get it directly from axios
+    return res.data; 
   } catch (err) {
     console.error("Error fetching user bookings:", err);
     return null;
@@ -170,7 +170,7 @@ export const getUserBookings = async (userId) => {
 export const createRazorpayOrder = async (bookingData) => {
   try {
       const response = await axios.post("/api/payments/create-order", bookingData);
-      return response.data; // Razorpay order details
+      return response.data; 
   } catch (error) {
       console.error("Error creating Razorpay order:", error);
       throw error;
@@ -180,15 +180,106 @@ export const createRazorpayOrder = async (bookingData) => {
 export const newOrder = async (paymentData) => {
   try {
       const response = await axios.post("/api/payments/verify-payment", paymentData);
-      return response.data; // Handle success
+      return response.data;
   } catch (error) {
       console.error("Error verifying payment:", error);
       throw error;
   }
 };
 
+//SPONSOR
+// Add a new sponsor
+export const addSponsor = async (sponsorData) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Unauthorized: No token found");
+    }
 
+    const res = await axios.post("/sponsor", sponsorData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
 
+    if (res.status === 201) {
+      return res.data;
+    }
+
+    throw new Error("Failed to add sponsor");
+  } catch (err) {
+    console.error("Error adding sponsor:", err);
+    throw err;
+  }
+};
+
+// Fetch all sponsors for an event
+export const getSponsorsByEvent = async (eventId) => {
+  try {
+    const res = await axios.get(`/sponsor/event/${eventId}`);
+    if (res.status !== 200) {
+      throw new Error("Failed to fetch sponsors");
+    }
+    return res.data;
+  } catch (err) {
+    console.error("Error fetching sponsors:", err);
+    throw err;
+  }
+};
+export const getSponsorById = async (id) => {
+  try {
+    const res = await axios.get(`/sponsor/${id}`); 
+    if (res.status !== 200) {
+      throw new Error("Failed to fetch sponsor");
+    }
+    return res.data;
+  } catch (err) {
+    console.error("Error fetching sponsor:", err);
+    throw err;
+  }
+};
+// Delete a sponsor by ID
+export const deleteSponsor = async (sponsorId) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Unauthorized: No token found");
+    }
+
+    const res = await axios.delete(`/sponsor/${sponsorId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.status === 200) {
+      return res.data;
+    }
+
+    throw new Error("Failed to delete sponsor");
+  } catch (err) {
+    console.error("Error deleting sponsor:", err);
+    throw err;
+  }
+};
+
+export const updateSponsor = async (sponsorId, sponsorData) => {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      throw new Error("Unauthorized: No token found");
+    }
+
+    const res = await axios.put(`/sponsor/${sponsorId}`, sponsorData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.status === 200) {
+      return res.data;
+    }
+
+    throw new Error("Failed to update sponsor");
+  } catch (err) {
+    console.error("Error updating sponsor:", err);
+    throw err;
+  }
+};
 
 
 
@@ -337,7 +428,7 @@ export const getSubEventsByEvent = async (eventId) => {
     if (res.status !== 200) {
       throw new Error("Failed to fetch sub-events for this event");
     }
-    return res.data.subEvents; // Return only the sub-events array
+    return res.data.subEvents; 
   } catch (err) {
     console.error("Error fetching sub-events:", err);
     throw err;
@@ -382,6 +473,47 @@ export const deleteSubEvent = async (id, token) => {
   } catch (err) {
     console.error("Error deleting sub-event:", err.response?.data || err.message);
     throw err;
+  }
+};
+
+
+
+
+
+
+
+
+export const getAllEventsWithRegistrationCount = async () => {
+  try {
+    const res = await axios.get("/booking");  
+
+    if (res.status !== 200 || !res.data?.bookings) {
+      console.log("No bookings data");
+      return [];
+    }
+
+    const eventRegistrationCount = res.data.bookings.reduce((acc, booking) => {
+      const eventId = booking.event?._id;
+      if (eventId) {
+        acc[eventId] = (acc[eventId] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    const eventsRes = await axios.get("/event"); 
+
+    if (eventsRes.status !== 200 || !eventsRes.data?.events) {
+      console.log("No events found");
+      return [];
+    }
+
+    return eventsRes.data.events.map((event) => ({
+      ...event,
+      registrationCount: eventRegistrationCount[event._id] || 0,
+    }));
+  } catch (err) {
+    console.error("Error fetching events with registration count:", err);
+    return [];
   }
 };
 
