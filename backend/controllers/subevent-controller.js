@@ -55,14 +55,12 @@ export const addSubEvent = async (req, res, next) => {
 
         await newSubEvent.save({ session });
 
-        // Associate sub-event with the event
         if (!existingEvent.subEvents) {
             existingEvent.subEvents = [];
         }
         existingEvent.subEvents.push(newSubEvent._id);
         await existingEvent.save({ session });
 
-        // Associate sub-event with admin
         const adminUser = await Admin.findById(adminId);
         if (!adminUser) {
             return res.status(404).json({ message: "Admin not found" });
@@ -73,7 +71,6 @@ export const addSubEvent = async (req, res, next) => {
         adminUser.addedSubEvents.push(newSubEvent._id);
         await adminUser.save({ session });
 
-        // Commit the transaction
         await session.commitTransaction();
         session.endSession();
     } catch (err) {
@@ -169,7 +166,7 @@ export const updateSubEvent = async (req, res, next) => {
 
 
 
-// Delete a sub-event and remove its reference from the Event model
+// Delete subevent 
 export const deleteSubEvent = async (req, res, next) => {
     const extractedToken = req.headers.authorization?.split(" ")[1];
     if (!extractedToken || extractedToken.trim() === "") {
@@ -201,7 +198,6 @@ export const deleteSubEvent = async (req, res, next) => {
             { session }
         );
 
-        // Delete sub-event
         await SubEvent.findByIdAndDelete(subEventId, { session });
 
         await session.commitTransaction();

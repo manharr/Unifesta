@@ -52,13 +52,11 @@ export const addEvent = async (req, res) => {
 
             await newEvent.save({ session });
 
-            // Update admin with new event
             const adminUser = await Admin.findById(adminId);
             if (!adminUser) throw new Error("Admin not found");
             adminUser.addedEvents.push(newEvent._id);
             await adminUser.save({ session });
 
-            // Update college with new event
             const collegeToUpdate = await College.findById(college);
             if (!collegeToUpdate) throw new Error("College not found");
             collegeToUpdate.events.push(newEvent._id);
@@ -143,10 +141,21 @@ export const updateEvent = async (req, res, next) => {
         sponsors,
         coordinatorsContact,
         images,
-        rules  // Ensure images are included in the request body
+        rules,
+        college  
     } = req.body;
 
     try {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+
+        const existingEvent = await Event.findById(eventId);
+        if (!existingEvent) {
+            return res.status(404).json({ message: "Event not found" });
+        }
+
+        const previousCollegeId = existingEvent.college;
+
         const updatedEvent = await Event.findByIdAndUpdate(
             eventId,
             {
@@ -161,14 +170,38 @@ export const updateEvent = async (req, res, next) => {
                 sponsors,
                 coordinatorsContact,
                 images,
-                rules  
+                rules,
+                college  
             },
-            { new: true }
+            { new: true, session }
         );
 
         if (!updatedEvent) {
+            await session.abortTransaction();
+            session.endSession();
             return res.status(404).json({ message: "Event not found" });
         }
+
+        // If college is updated, remove event from previous college and add it to the new one
+        if (college && previousCollegeId.toString() !== college.toString()) {
+            const prevCollege = await College.findById(previousCollegeId);
+            if (prevCollege) {
+                prevCollege.events = prevCollege.events.filter(event => event.toString() !== eventId);
+                await prevCollege.save({ session });
+            }
+
+            const newCollege = await College.findById(college);
+            if (!newCollege) {
+                await session.abortTransaction();
+                session.endSession();
+                return res.status(400).json({ message: "Invalid college ID" });
+            }
+            newCollege.events.push(eventId);
+            await newCollege.save({ session });
+        }
+
+        await session.commitTransaction();
+        session.endSession();
 
         return res.status(200).json({ message: "Event updated successfully", event: updatedEvent });
     } catch (err) {
@@ -176,6 +209,7 @@ export const updateEvent = async (req, res, next) => {
         return res.status(500).json({ message: "Failed to update event" });
     }
 };
+
 
 
 

@@ -5,7 +5,7 @@ import SubEvent from "../models/SubEvent.js";
 import User from "../models/User.js";
 
 export const newBooking = async (req, res, next) => {
-    const { event, user, subEvent, college, additionalInfo, contact } = req.body; // Added contact field
+    const { event, user, subEvent, college, additionalInfo, contact } = req.body; 
 
     let existingEvent, existingUser, existingSubEvent;
     try {
@@ -17,10 +17,9 @@ export const newBooking = async (req, res, next) => {
             return res.status(404).json({ message: "Sub-event not found" });
         }
 
-        // ✅ Ensure venue exists (to avoid database errors)
         if (!existingSubEvent.venue) {
-            existingSubEvent.venue = "Default Venue"; // Set a fallback value
-            await existingSubEvent.save(); // Save only if venue was missing
+            existingSubEvent.venue = "Default Venue"; 
+            await existingSubEvent.save(); 
         }
     } catch (err) {
         return res.status(500).json({ message: "Error fetching event/user/subEvent", error: err.message });
@@ -36,7 +35,7 @@ export const newBooking = async (req, res, next) => {
             user,
             subEvent,
             college,
-            contact, // Added contact field in booking
+            contact, 
             additionalInfo: additionalInfo || "",
             registeredOn: new Date(),
         });
@@ -115,7 +114,6 @@ export const getBookingById = async (req, res, next) => {
 };
 
 // Get bookings by user
-// Get bookings by user
 export const getBookingsByUser = async (req, res, next) => {
     const { userId } = req.params;
 
@@ -133,7 +131,7 @@ export const getBookingsByUser = async (req, res, next) => {
             })            
             .populate({
                 path: "subEvent",
-                select: "type description details venue", // Include details in the response
+                select: "type description details venue", 
             });
             
 
@@ -162,15 +160,12 @@ export const deleteBooking = async (req, res, next) => {
         session.startTransaction();
 
         try {
-            // Remove booking reference from User
             booking.user.bookings.pull(booking._id);
             await booking.user.save({ session });
 
-            // Remove booking reference from Event
             booking.event.bookings.pull(booking._id);
             await booking.event.save({ session });
 
-            // Remove booking reference from SubEvent and decrement registeredParticipants
             if (booking.subEvent) {
                 booking.subEvent.bookings.pull(booking._id);
 
@@ -200,3 +195,5 @@ export const deleteBooking = async (req, res, next) => {
         return res.status(500).json({ message: "Unable to delete booking", error: err.message });
     }
 };
+
+

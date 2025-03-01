@@ -10,7 +10,7 @@ const createOrder = async (req, res) => {
     });
 
     const options = {
-        amount: amount * 100,  // Razorpay expects the amount in paise
+        amount: amount * 100,  
         currency: currency,
         receipt: crypto.randomBytes(10).toString('hex'),
     };

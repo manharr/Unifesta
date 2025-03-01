@@ -10,6 +10,7 @@ import collegeRouter from './routes/college-routes.js';
 import subEventRouter from './routes/subevent-routes.js';
 import uploadRouter from './routes/upload-routes.js';
 import PaymentRouter from './routes/payment-routes.js';
+import sponsorRouter from './routes/sponsor-routes.js';
 
 dotenv.config();
 
@@ -17,9 +18,7 @@ const app = express();
 
 
 app.use((req, res, next) => {
-    // If maintenance mode is enabled, block all requests
     if (process.env.MAINTENANCE_MODE === 'true') {
-      // console.log('Maintenance mode is ON'); // Debugging log
       return res.status(503).send('The site is under maintenance. Please try again later.');
     }
   //   console.log('Maintenance mode is OFF'); // Debugging log
@@ -44,7 +43,9 @@ app.use("/booking", bookingsRouter);
 app.use("/college", collegeRouter);
 app.use("/subevent", subEventRouter);
 app.use("/api/payments", PaymentRouter);
-app.use("/upload", uploadRouter); // Cloudinary image upload route
+app.use("/upload", uploadRouter); 
+app.use("/sponsor",sponsorRouter);
+
 
 // Root endpoint
 app.get("/", (req, res) => {

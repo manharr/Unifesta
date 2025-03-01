@@ -6,7 +6,6 @@ import cloudinary from "../config/cloudinary.js";
 
 const uploadRouter = express.Router();
 
-// Configure Multer (Store temporarily)
 const upload = multer({ dest: "uploads/" });
 
 uploadRouter.post("/", upload.single("image"), uploadImage);

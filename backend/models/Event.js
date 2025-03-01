@@ -57,8 +57,11 @@ const eventSchema = new mongoose.Schema({
 
     subEvents: [{ type: mongoose.Schema.Types.ObjectId, ref: "SubEvent" }],
 
-    sponsors: [{ type: String }],
-
+    sponsors: [{ 
+        type: mongoose.Schema.Types.ObjectId, 
+        ref: "Sponsor" 
+    }],
+    
     coordinatorsContact: [
         {
             name: { type: String, required: true },

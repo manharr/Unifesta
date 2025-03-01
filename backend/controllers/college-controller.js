@@ -137,7 +137,6 @@ export const deleteCollege = async (req, res, next) => {
     }
   
     let adminId;
-    // Verify token asynchronously
     try {
         const decoded = await jwt.verify(extractedToken, process.env.SECRET_KEY);  
         adminId = decoded.id;
@@ -157,7 +156,6 @@ export const deleteCollege = async (req, res, next) => {
         }
         console.log("College deleted successfully");
 
-        // Return success message
         return res.status(200).json({ message: "College deleted successfully" });
     } catch (err) {
         console.log("Error deleting college:", err.message);
