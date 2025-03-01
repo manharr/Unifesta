@@ -64,164 +64,167 @@ const Booking = () => {
   };
 
   return (
-    <Container
-      maxWidth="lg"
-      sx={{
-        color: "#E0E0E0",
-        bgcolor: "#121212",
-        py: 6,
-        mt: 2,
-        mb: 2,
-        borderRadius: 4,
-        boxShadow: "0px 4px 15px rgba(0,0,0,0.5)",
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
-      {event ? (
-        <Box>
-          {/* Event Details */}
-          <Grid container spacing={4} alignItems="center">
-            {/* Event Image */}
-            <Grid item xs={12} sm={4} sx={{ textAlign: "center", mb: { xs: 4, sm: 0 } }}>
-              {event.images?.length > 0 && (
-                <Card
-                  sx={{
-                    bgcolor: "#1E1E1E",
-                    boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.7)",
-                    borderRadius: "15px",
-                    overflow: "hidden",
-                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                    "&:hover": {
-                      transform: "scale(1.02)",
-                      boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.8)",
-                    },
-                  }}
-                >
-                  <CardMedia
-                    component="img"
-                    height="350"
-                    image={
-                      event.images[0]?.startsWith("http")
-                        ? event.images[0] 
-                        : `http://localhost:5000${event.images[0]}` 
-                    }   
-                    alt="Event Poster"
-                    sx={{
-                      objectFit: "cover",
-                      transition: "opacity 0.3s ease",
-                      "&:hover": {
-                        opacity: 0.9,
-                      },
-                    }}
-                  />
-                </Card>
-              )}
-            </Grid>
-
-            {/* Event Information */}
-            <Grid item xs={12} sm={8}>
-              <Typography
-                variant="h3"
-                fontWeight="700"
-                color="#BB86FC"
+   <Container
+  maxWidth="lg"
+  sx={{
+    color: "#E0E0E0",
+    bgcolor: "#121212",
+    py: { xs: 4, sm: 6 },
+    px: { xs: 2, sm: 4 },
+    mt: 2,
+    mb: 2,
+    borderRadius: 4,
+    boxShadow: "0px 4px 15px rgba(0,0,0,0.5)",
+    fontFamily: "'Inter', sans-serif",
+  }}
+>
+  {event ? (
+    <Box>
+      {/* Event Details */}
+      <Grid container spacing={4} alignItems="center">
+        {/* Event Image */}
+        <Grid item xs={12} sm={4} sx={{ textAlign: "center", mb: { xs: 3, sm: 0 } }}>
+          {event.images?.length > 0 && (
+            <Card
+              sx={{
+                bgcolor: "#1E1E1E",
+                boxShadow: "0px 8px 20px rgba(0, 0, 0, 0.7)",
+                borderRadius: "15px",
+                overflow: "hidden",
+                transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                "&:hover": {
+                  transform: "scale(1.02)",
+                  boxShadow: "0px 10px 25px rgba(0, 0, 0, 0.8)",
+                },
+              }}
+            >
+              <CardMedia
+                component="img"
+                height="100%"
+                image={
+                  event.images[0]?.startsWith("http")
+                    ? event.images[0]
+                    : `http://localhost:5000${event.images[0]}`
+                }
+                alt="Event Poster"
                 sx={{
-                  mb: 2,
-                  textTransform: "uppercase",
-                  letterSpacing: "1px",
-                  fontFamily: "'Inter', sans-serif",
-                  
-                }}
-              >
-                {event.title}
-              </Typography>
-
-              {/* Event Date */}
-              <Typography
-                variant="h6"
-                color="#E0E0E0"
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  mb: 3,
-                  fontFamily: "'Inter', sans-serif",
-                }}
-              >
-                📅{" "}
-                {new Date(event.startDate).toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}{" "}
-                &mdash;{" "}
-                {new Date(event.endDate).toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-              </Typography>
-
-              {/* College Name */}
-              <Typography
-                variant="h6"
-                color="#FFA726"
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  mb: 2,
-                  fontWeight: "bold",
-                  fontFamily: "'Inter', sans-serif",
-                  letterSpacing: "0.5px",
-                  textTransform: "uppercase",
-                }}
-              >
-                🏫 <strong>{event.college?.name}</strong>
-              </Typography>
-
-              {/* Description Section */}
-              <Paper
-                sx={{
-                  bgcolor: "#1E1E1E",
-                  p: 3,
-                  borderRadius: "10px",
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.6)",
-                  transition: "transform 0.3s ease",
+                  width: "100%",
+                  objectFit: "cover",
+                  maxHeight: { xs: 250, sm: 350 },
+                  transition: "opacity 0.3s ease",
                   "&:hover": {
-                    transform: "translateY(-2px)",
+                    opacity: 0.9,
                   },
                 }}
-              >
-                <Typography
-                  variant="body1"
-                  sx={{
-                    color: "#E0E0E0",
-                    lineHeight: 1.8,
-                    textAlign: "justify",
-                    fontFamily: "'Inter', sans-serif",
-                  }}
-                >
-                  {event.description}
-                </Typography>
-              </Paper>
+              />
+            </Card>
+          )}
+        </Grid>
 
-              {/* Location */}
-              <Typography
-                variant="h6"
-                sx={{
-                  mt: 3,
-                  fontWeight: "600",
-                  color: "#E0E0E0",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 1,
-                  fontFamily: "'Inter', sans-serif",
-                  letterSpacing: "0.5px",
-                }}
-              >
-                📍 Location: <span style={{ color: "#81C784", fontWeight: "bold" }}>{event.location}</span>
-              </Typography>
+        {/* Event Information */}
+        <Grid item xs={12} sm={8}>
+          <Typography
+            variant="h4"
+            fontWeight="700"
+            color="#BB86FC"
+            sx={{
+              mb: 2,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              fontSize: { xs: "1.5rem", sm: "2rem" },
+              textAlign: { xs: "center", sm: "left" },
+            }}
+          >
+            {event.title}
+          </Typography>
 
+          {/* Event Date */}
+          <Typography
+            variant="h6"
+            color="#E0E0E0"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: { xs: "center", sm: "flex-start" },
+              gap: 1,
+              mb: 2,
+              fontSize: { xs: "1rem", sm: "1.2rem" },
+            }}
+          >
+            📅{" "}
+            {new Date(event.startDate).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}{" "}
+            &mdash;{" "}
+            {new Date(event.endDate).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "short",
+              year: "numeric",
+            })}
+          </Typography>
+
+          {/* College Name */}
+          <Typography
+            variant="h6"
+            color="#FFA726"
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: { xs: "center", sm: "flex-start" },
+              gap: 1,
+              mb: 2,
+              fontWeight: "bold",
+              textTransform: "uppercase",
+              fontSize: { xs: "1rem", sm: "1.2rem" },
+            }}
+          >
+            🏫 <strong>{event.college?.name}</strong>
+          </Typography>
+
+          {/* Description Section */}
+          <Paper
+            sx={{
+              bgcolor: "#1E1E1E",
+              p: { xs: 2, sm: 3 },
+              borderRadius: "10px",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.6)",
+              transition: "transform 0.3s ease",
+              "&:hover": {
+                transform: "translateY(-2px)",
+              },
+            }}
+          >
+            <Typography
+              variant="body1"
+              sx={{
+                color: "#E0E0E0",
+                lineHeight: 1.8,
+                textAlign: "justify",
+                fontSize: { xs: "0.9rem", sm: "1rem" },
+              }}
+            >
+              {event.description}
+            </Typography>
+          </Paper>
+
+          {/* Location */}
+          <Typography
+            variant="h6"
+            sx={{
+              mt: 3,
+              fontWeight: "600",
+              color: "#E0E0E0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: { xs: "center", sm: "flex-start" },
+              gap: 1,
+              fontSize: { xs: "1rem", sm: "1.2rem" },
+            }}
+          >
+            📍 Location: <span style={{ color: "#81C784", fontWeight: "bold" }}>{event.location}</span>
+          </Typography>
               
           {/* Event Rules Section */}
           {event.rules && (
