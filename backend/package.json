@@ -4,7 +4,9 @@
   "main": "index.js",
   "tyoe": "module",
   "scripts": {
-    "dev": "nodemon --experimental-modules --es-module-specifier-resolution=node app.js"
+    "dev": "nodemon --experimental-modules --es-module-specifier-resolution=node app.js",
+        "start": "node --experimental-modules --es-module-specifier-resolution=node app.js"
+
   },
   "type": "module",
   "keywords": [],
