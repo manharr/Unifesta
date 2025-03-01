@@ -52,7 +52,7 @@ const SuccessPage = () => {
           "&::before, &::after": {
             content: '""',
             position: "absolute",
-            backgroundColor: "#BB86FC", // Purple accent for checkmark
+            backgroundColor: "#BB86FC", 
             borderRadius: "2px",
           },
           "&::before": {

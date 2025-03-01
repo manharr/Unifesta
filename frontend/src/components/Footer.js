@@ -9,6 +9,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 
 const Footer = () => {
   return (
+    <footer id="footer">
     <Box
       component="footer"
       sx={{
@@ -17,21 +18,26 @@ const Footer = () => {
         pt: 6,
         pb: 4,
         px: { xs: 3, md: 6 },
-        fontFamily: "'Poppins', sans-serif",
+        fontFamily: "'Inter', sans-serif",
       }}
     >
       {/* Main Footer Content */}
       <Grid container spacing={5} maxWidth="1200px" mx="auto">
         {/* About Section */}
-        <Grid item xs={12} md={4}>
-          <Typography variant="h4" fontWeight="bold" color="#FFD700" gutterBottom>
-            UniFesta
-          </Typography>
-
+        <Grid item xs={12} md={4} sx={{ display: "flex", justifyContent: "flex-start" }}>
+          <Box
+            component="img"
+            src="/logo1.png"
+            alt="UniFesta Logo"
+            sx={{
+              width: "280px", 
+              height: "auto", 
+            }}
+          />
         </Grid>
 
         {/* Quick Links */}
-        {/* <Grid item xs={6} md={2} ml={-3}>
+        <Grid item xs={6} md={2} ml={-3}>
           <Typography variant="h6" fontWeight="bold" color="#FFD700" gutterBottom>
             Quick Links
           </Typography>
@@ -44,7 +50,7 @@ const Footer = () => {
               </Link>
             ))}
           </Box>
-        </Grid> */}
+        </Grid>
 
         {/* Resources */}
         <Grid item xs={6} md={2}>
@@ -99,13 +105,16 @@ const Footer = () => {
 
       {/* Copyright Section */}
       <Box mt={4} textAlign="center">
-  <Typography variant="body2" sx={{ opacity: 0.6 }}>
-    Made with ❤️ by Mandy | © {new Date().getFullYear()} UniFesta. All Rights Reserved.
-  </Typography>
-</Box>
+      <Typography variant="body2" sx={{ opacity: 0.6 }}>
+        Made with ❤️ by Mandy | © {new Date().getFullYear()} UniFesta. All Rights Reserved.
+      </Typography>
+    </Box>
 
     </Box>
+    </footer>
+
   );
+  
 };
 
 export default Footer;

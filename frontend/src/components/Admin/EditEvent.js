@@ -13,13 +13,13 @@ import {
   Grid,
   List,
   ListItem,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
 import { useParams, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import { getEventDetails, updateEventDetails, uploadImage } from "../../api-helpers/api-helpers";
+import { getEventDetails, updateEventDetails, uploadImage, getAllColleges } from "../../api-helpers/api-helpers";
 
 const EditEvent = () => {
   const { id } = useParams();
@@ -30,17 +30,17 @@ const EditEvent = () => {
     startDate: "",
     endDate: "",
     description: "",
+    college: null,
     location: "",
     images: [],
     maxParticipants: 0,
     isFeatured: false,
-    sponsors: [],
     eventStatus: "",
     coordinatorsContact: [{ name: "", phone: "" }],
     rules: [],
-
   });
 
+  const [colleges, setColleges] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -61,7 +61,21 @@ const EditEvent = () => {
       }
     };
 
-    fetchEventDetails();
+    const fetchColleges = async () => {
+      try {
+        const collegeList = await getAllColleges();
+        setColleges(collegeList || []);
+
+        setEventData((prevData) => ({
+          ...prevData,
+          college: collegeList.find((c) => c._id === prevData.college?._id) || null,
+        }));
+      } catch (error) {
+        console.error("Failed to fetch colleges", error);
+      }
+    };
+
+    fetchEventDetails().then(fetchColleges);
   }, [id]);
 
   const handleChange = (e) => {
@@ -71,16 +85,6 @@ const EditEvent = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     setImageFiles(files);
-  };
-
-  const handleSponsorChange = (index, value) => {
-    const updatedSponsors = [...eventData.sponsors];
-    updatedSponsors[index] = value;
-    setEventData({ ...eventData, sponsors: updatedSponsors });
-  };
-
-  const handleAddSponsor = () => {
-    setEventData({ ...eventData, sponsors: [...eventData.sponsors, ""] });
   };
 
   const handleCoordinatorChange = (index, field, value) => {
@@ -103,11 +107,10 @@ const EditEvent = () => {
       setOpenSnackbar(true);
       return;
     }
-  
+
     try {
-      let imageUrls = eventData.images; 
-  
-      // If new images are uploaded, replace old images
+      let imageUrls = eventData.images;
+
       if (imageFiles.length > 0) {
         const uploadPromises = imageFiles.map(async (file) => {
           const formData = new FormData();
@@ -115,23 +118,21 @@ const EditEvent = () => {
           const response = await uploadImage(formData);
           return response.imageUrl;
         });
-  
-        imageUrls = await Promise.all(uploadPromises); // Completely replace images
+
+        imageUrls = await Promise.all(uploadPromises); 
       }
-  
-      // Update event with new images and other data
+
       await updateEventDetails(id, { ...eventData, images: imageUrls });
-  
-      // Update state to reflect new images
+
       setEventData((prevState) => ({
         ...prevState,
-        images: imageUrls, // Now replacing images properly
+        images: imageUrls, 
       }));
-  
+
       setSnackbarMessage("Event updated successfully!");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-  
+
       setTimeout(() => navigate("/admin/manage-event"), 1500);
     } catch (err) {
       console.error(err);
@@ -140,6 +141,7 @@ const EditEvent = () => {
       setOpenSnackbar(true);
     }
   };
+
   const handleRuleChange = (index, value) => {
     const updatedRules = [...eventData.rules];
     updatedRules[index] = value;
@@ -149,17 +151,18 @@ const EditEvent = () => {
   const handleAddRule = () => {
     setEventData({ ...eventData, rules: [...eventData.rules, ""] });
   };
+
   const handleDeleteRule = (index) => {
     const updatedRules = eventData.rules.filter((_, i) => i !== index);
     setEventData({ ...eventData, rules: updatedRules });
   };
+
   const handleDeleteCoordinator = (index) => {
     setEventData((prevData) => ({
       ...prevData,
       coordinatorsContact: prevData.coordinatorsContact.filter((_, i) => i !== index),
     }));
   };
-  
 
   return (
     <Box sx={{ display: "flex", height: "100vh", bgcolor: "#F5F5F5" }}>
@@ -197,6 +200,18 @@ const EditEvent = () => {
               <TextField fullWidth type="number" label="Max Participants" name="maxParticipants" variant="outlined" value={eventData.maxParticipants} onChange={handleChange} />
             </Grid>
 
+            <Grid item xs={6}>
+              <Autocomplete
+                options={colleges}
+                getOptionLabel={(option) => option?.name || ""}
+                value={eventData.college}
+                onChange={(event, newValue) =>
+                  setEventData({ ...eventData, college: newValue || null })
+                }
+                renderInput={(params) => <TextField {...params} label="Select College" variant="outlined" />}
+              />
+            </Grid>
+
             <Grid item xs={12}>
               <Typography variant="subtitle1">Upload Images:</Typography>
               <input type="file" accept="image/*" multiple onChange={handleImageChange} />
@@ -205,26 +220,11 @@ const EditEvent = () => {
             <Grid item xs={12}>
               <TextField fullWidth label="Description" name="description" variant="outlined" multiline rows={2} value={eventData.description} onChange={handleChange} />
             </Grid>
-            <Grid item xs={6}>
-            <Autocomplete
-                options={["Ongoing", "Upcoming"]}
-                value={eventData.eventStatus}
-                onChange={(event, newValue) => setEventData({ ...eventData, eventStatus: newValue || "" })}
-                renderInput={(params) => <TextField {...params} label="Event Status" variant="outlined" />}
-            />
-            </Grid>
 
             <Grid item xs={12}>
               <FormControlLabel control={<Checkbox checked={eventData.isFeatured} onChange={(e) => setEventData({ ...eventData, isFeatured: e.target.checked })} />} label="Featured Event" />
             </Grid>
 
-            <Grid item xs={12}>
-              <Typography variant="subtitle1">Sponsors:</Typography>
-              {eventData.sponsors.map((sponsor, index) => (
-                <TextField key={index} fullWidth label={`Sponsor ${index + 1}`} value={sponsor} onChange={(e) => handleSponsorChange(index, e.target.value)} />
-              ))}
-              <Button onClick={handleAddSponsor}>Add Sponsor</Button>
-            </Grid>
             <Grid item xs={12}>
               <Typography variant="subtitle1">Rules:</Typography>
               <List>
@@ -245,37 +245,36 @@ const EditEvent = () => {
               </List>
               <Button onClick={handleAddRule}>Add Rule</Button>
             </Grid>
-            
-            <Grid item xs={12}>
-            <Typography variant="subtitle1">Coordinators:</Typography>
-{eventData.coordinatorsContact.map((contact, index) => (
-  <Grid container spacing={2} key={index} sx={{ mb: 2, alignItems: "center" }}>
-    <Grid item xs={5}>
-      <TextField
-        fullWidth
-        label="Coordinator Name"
-        value={contact.name}
-        onChange={(e) => handleCoordinatorChange(index, "name", e.target.value)}
-      />
-    </Grid>
-    <Grid item xs={5}>
-      <TextField
-        fullWidth
-        label="Contact Number"
-        type="tel"
-        value={contact.phone}
-        onChange={(e) => handleCoordinatorChange(index, "phone", e.target.value)}
-      />
-    </Grid>
-    <Grid item xs={2}>
-      <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteCoordinator(index)}>
-        <DeleteIcon />
-      </IconButton>
-    </Grid>
-  </Grid>
-))}
-<Button onClick={handleAddCoordinator}>Add Coordinator</Button>
 
+            <Grid item xs={12}>
+              <Typography variant="subtitle1">Coordinators:</Typography>
+              {eventData.coordinatorsContact.map((contact, index) => (
+                <Grid container spacing={2} key={index} sx={{ mb: 2, alignItems: "center" }}>
+                  <Grid item xs={5}>
+                    <TextField
+                      fullWidth
+                      label="Coordinator Name"
+                      value={contact.name}
+                      onChange={(e) => handleCoordinatorChange(index, "name", e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={5}>
+                    <TextField
+                      fullWidth
+                      label="Contact Number"
+                      type="tel"
+                      value={contact.phone}
+                      onChange={(e) => handleCoordinatorChange(index, "phone", e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={2}>
+                    <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteCoordinator(index)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
+              ))}
+              <Button onClick={handleAddCoordinator}>Add Coordinator</Button>
             </Grid>
 
             <Grid item xs={12}>

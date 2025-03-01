@@ -21,10 +21,8 @@ const UserProfile = () => {
   });
   const [error, setError] = useState("");
 
-  // Fetch userId from local storage
   const userId = localStorage.getItem("userId");
 
-  // Fetch user details on mount
   useEffect(() => {
     if (!userId) {
         navigate("/auth");
@@ -40,7 +38,7 @@ const UserProfile = () => {
             setProfile({
                 name: userData.name,
                 email: userData.email,
-                contactNumber: userData.contactNumber || "+91", // Default if not provided
+                contactNumber: userData.contactNumber || "", 
             });
         } catch (err) {
             console.error("Error fetching user details:", err);
@@ -58,7 +56,7 @@ const UserProfile = () => {
         const updatedProfile = {
             name: profile.name,
             email: profile.email,
-            ...(profile.contactNumber && { contactNumber: profile.contactNumber }), // Update only if provided
+            ...(profile.contactNumber && { contactNumber: profile.contactNumber }),
         };
 
         await updateUser(userId, updatedProfile);
@@ -74,7 +72,7 @@ const UserProfile = () => {
     setProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  if (!userId) return null; // Don't render if user is not logged in
+  if (!userId) return null; 
 
   return (
     <Container

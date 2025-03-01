@@ -23,12 +23,10 @@ const AddCollege = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
 
-  // Handle input change
   const handleChange = (e) => {
     setCollegeData({ ...collegeData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -40,12 +38,12 @@ const AddCollege = () => {
         return;
       }
 
-      await createCollege(collegeData, token); // Call API helper function
+      await createCollege(collegeData, token); 
 
       setSnackbarMessage("College added successfully!");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
-      setCollegeData({ name: "", location: "", description: "" }); // Reset form
+      setCollegeData({ name: "", location: "", description: "" });
     } catch (err) {
       setSnackbarMessage("Failed to add college. Please try again.");
       setSnackbarSeverity("error");

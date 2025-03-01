@@ -36,10 +36,10 @@ const EventCards = ({ events, isUpcoming }) => {
 
             {/* Event Details */}
             <CardContent sx={{ flexGrow: 1, p: 2 }}>
-              <Typography variant="h6" fontWeight="bold" gutterBottom>
+              <Typography variant="h6" fontWeight="bold" gutterBottom >
                 {event.title}
               </Typography>
-              <Typography variant="body2" color="#cbcbcb" gutterBottom>
+              <Typography variant="body2" color="#cbcbcb" gutterBottom fontFamily={"Inter"}>
                 {event.college ? event.college.name : "College not available"}
               </Typography>
               <Typography variant="body2" sx={{ opacity: 0.7 }}>
@@ -59,6 +59,7 @@ const EventCards = ({ events, isUpcoming }) => {
                     color: "white", 
                     borderRadius: 8,
                     fontWeight: "bold",
+                    fontFamily: "'Inter', sans-serif",
                     px: 3,
                     py: 1,
                     "&:hover": { bgcolor: "#ff4444" }

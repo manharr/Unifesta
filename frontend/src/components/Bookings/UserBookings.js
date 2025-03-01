@@ -6,15 +6,15 @@ import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import BusinessIcon from "@mui/icons-material/Business";
 
 const UserBookings = () => {
-  const user = useSelector(state => state.user); // Fetch entire user object
-  const userId = user?.userId; // Ensure userId is valid
+  const user = useSelector(state => state.user); 
+  const userId = user?.userId;
 
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    console.log("Fetched User ID:", userId); // Debugging userId
+    console.log("Fetched User ID:", userId); 
 
     if (!userId) {
       setError("User ID is missing or user is not logged in.");
@@ -73,13 +73,13 @@ const UserBookings = () => {
     sx={{
       mt: 6,
       mb: 6,
-      background: "linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%)", // Deep dark gradient
+      background: "linear-gradient(135deg, #0F0F0F 0%, #1A1A1A 100%)", 
       minHeight: "100vh",
       padding: 4,
       borderRadius: 4,
-      boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.5)", // Subtle shadow for depth
+      boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.5)", 
       overflow: "hidden",
-      border: "1px solid rgba(255, 255, 255, 0.1)", // Subtle border for definition
+      border: "1px solid rgba(255, 255, 255, 0.1)",
     }}
   >
     {/* Header Section */}
@@ -89,8 +89,8 @@ const UserBookings = () => {
         component="h1"
         sx={{
           fontWeight: 800,
-          color: "#FF6B6B", // Vibrant accent color
-          fontFamily: "'Poppins', sans-serif",
+          color: "#FF6B6B",
+          fontFamily: "'Inter', sans-serif",
           letterSpacing: 1.5,
           textTransform: "uppercase",
           position: "relative",
@@ -116,18 +116,18 @@ const UserBookings = () => {
       textAlign: "center",
       mb: 4,
       padding: "12px 16px",
-      backgroundColor: "rgba(255, 107, 107, 0.1)", // Subtle red tint
-      borderLeft: "4px solid #FF6B6B", // Accent border
+      backgroundColor: "rgba(255, 107, 107, 0.1)",
+      borderLeft: "4px solid #FF6B6B", 
       borderRadius: "4px",
       maxWidth: "800px",
-      mx: "auto", // Center horizontally
+      mx: "auto", 
     }}
   >
     <Typography
       variant="body1"
       sx={{
         color: "#E2E8F0",
-        fontFamily: "'Poppins', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         fontWeight: 500,
         fontSize: "0.95rem",
         lineHeight: 1.6,
@@ -142,7 +142,7 @@ const UserBookings = () => {
       {bookings.map((booking) => {
         if (!booking.event) {
           console.warn("Skipping booking due to missing event:", booking);
-          return null; // Skip invalid entries
+          return null;
         }
   
         const selectedDetail =
@@ -160,15 +160,15 @@ const UserBookings = () => {
                 display: "flex",
                 flexDirection: "column",
                 borderRadius: 4,
-                background: "rgba(255, 255, 255, 0.05)", // Slightly transparent white
-                backdropFilter: "blur(16px)", // Frosted glass effect
+                background: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(16px)", 
                 boxShadow: "0 8px 24px rgba(0, 0, 0, 0.4)",
-                border: "1px solid rgba(255, 255, 255, 0.1)", // Subtle border
+                border: "1px solid rgba(255, 255, 255, 0.1)", 
                 transition: "transform 0.3s ease, box-shadow 0.3s ease",
                 "&:hover": {
                   transform: "translateY(-8px)",
                   boxShadow: "0 12px 32px rgba(0, 0, 0, 0.6)",
-                  borderColor: "rgba(255, 255, 255, 0.2)", // Highlight border on hover
+                  borderColor: "rgba(255, 255, 255, 0.2)", 
                 },
               }}
             >
@@ -178,9 +178,9 @@ const UserBookings = () => {
                   variant="h5"
                   sx={{
                     fontWeight: 700,
-                    color: "#FF6B6B", // Vibrant accent color
+                    color: "#FF6B6B", 
                     mb: 2,
-                    fontFamily: "'Poppins', sans-serif",
+                    fontFamily: "'Inter', sans-serif",
                     letterSpacing: 0.8,
                     fontSize:"29px"
                   }}
@@ -189,53 +189,55 @@ const UserBookings = () => {
                 </Typography>
 
                 <Typography
-  variant="body2"
-  sx={{
-    color: "#FACC15", 
-    lineHeight: 1.45,
-    textAlign: "left",
-    fontFamily: "'Inter', sans-serif",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-start",
-    gap: 0.7,
-    background: "linear-gradient(135deg, rgba(34, 34, 34, 0.9), rgba(24, 24, 24, 0.85))", // Elegant Dark
-    p: 1.0,
-    borderRadius: "7px",
-    border: "1px solid rgba(250, 204, 21, 0.4)", // Subtle Gold Glow
-    boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)",
-    width: "fit-content",
-    maxWidth: "78%",
-    mx: 0,
-    backdropFilter: "blur(9px)",
-    transition: "all 0.25s ease-in-out",
-    "&:hover": {
-      boxShadow: "0px 5px 12px rgba(250, 204, 21, 0.3)",
-      background: "linear-gradient(135deg, rgba(34, 34, 34, 0.95), rgba(24, 24, 24, 0.9))",
-    },
-  }}
->
-  <LocationOnOutlinedIcon sx={{ fontSize: 17, color: "#FACC15" }} />
-  <Box
-    component="span"
-    sx={{
-      fontWeight: 550,
-      fontSize: "12px",
-      color: "#FACC15", // Gold Text
-      textTransform: "uppercase",
-      letterSpacing: "0.45px",
-    }}
-  >
-    {booking.subEvent?.venue || "Venue to be announced"}
-  </Box>
-</Typography>
+                  variant="body2"
+                  sx={{
+                    color: "#FACC15", 
+                    lineHeight: 1.45,
+                    textAlign: "left",
+                    fontFamily: "'Inter', sans-serif",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "flex-start",
+                    gap: 0.7,
+                    background: "linear-gradient(135deg, rgba(34, 34, 34, 0.9), rgba(24, 24, 24, 0.85))", 
+                    p: 1.0,
+                    borderRadius: "7px",
+                    border: "1px solid rgba(250, 204, 21, 0.4)", 
+                    boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)",
+                    width: "fit-content",
+                    maxWidth: "78%",
+                    mx: 0,
+                    backdropFilter: "blur(9px)",
+                    transition: "all 0.25s ease-in-out",
+                    "&:hover": {
+                      boxShadow: "0px 5px 12px rgba(250, 204, 21, 0.3)",
+                      background: "linear-gradient(135deg, rgba(34, 34, 34, 0.95), rgba(24, 24, 24, 0.9))",
+                    },
+                  }}
+                >
+              <LocationOnOutlinedIcon sx={{ fontSize: 17, color: "#FACC15" }} />
+              <Box
+                component="span"
+                sx={{
+                  fontWeight: 550,
+                  fontSize: "12px",
+                  
+                  color: "#FACC15",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.45px",
+                }}
+              >
+                {booking.subEvent?.venue || "Venue to be announced"}
+              </Box>
+            </Typography>
 
 
-  {/* SubEvent Type & Description */}
+          {/* SubEvent Type & Description */}
                 <Typography
                   variant="body1"
                   sx={{
                     color: "#E2E8F0",
+                    fontFamily: "'Inter', sans-serif",
                     mb: 2,
                     fontSize: "0.95rem",
                     lineHeight: 1.6,
@@ -251,7 +253,7 @@ const UserBookings = () => {
                   <>
                     <Divider
                       sx={{
-                        backgroundColor: "rgba(255, 107, 107, 0.3)", // Accent color divider
+                        backgroundColor: "rgba(255, 107, 107, 0.3)", 
                         my: 2,
                       }}
                     />
@@ -300,48 +302,48 @@ const UserBookings = () => {
                 {booking.additionalInfo && (
                   <Typography
                     variant="body2"
-                    sx={{ color: "#A1A1AA", mt: 1, fontStyle: "italic" }}
+                    sx={{ color: "#A1A1AA", mt: 1,mb:1}}
                   >
                     <strong>Additional Info:</strong> {booking.additionalInfo}
                   </Typography>
                 )}
   
                 {/* College Info */}
-{booking.event?.college?.name && (
-  <Box
-    sx={{
-      display: "flex",
-      alignItems: "center",
-      gap: 1,
-      background: "linear-gradient(135deg, rgba(34, 34, 34, 0.9), rgba(24, 24, 24, 0.85))", // Elegant Dark Background
-      padding: "8px 14px",
-      borderRadius: "7px",
-      border: "1px solid rgba(250, 204, 21, 0.4)", // Subtle Gold Border
-      boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)",
-      width: "fit-content",
-      backdropFilter: "blur(9px)",
-      transition: "all 0.25s ease-in-out",
-      "&:hover": {
-        boxShadow: "0px 5px 12px rgba(250, 204, 21, 0.3)",
-        background: "linear-gradient(135deg, rgba(34, 34, 34, 0.95), rgba(24, 24, 24, 0.9))",
-      },
-    }}
-  >
-    <BusinessIcon sx={{ fontSize: 18, color: "#FACC15" }} /> {/* Gold Icon */}
-    <Typography
-      variant="body2"
-      sx={{
-        color: "#FACC15", // Gold Text
-        fontWeight: 550,
-        fontSize: "0.85rem",
-        textTransform: "uppercase",
-        letterSpacing: "0.5px",
-      }}
-    >
-      {booking.event.college.name}
-    </Typography>
-  </Box>
-)}
+              {booking.event?.college?.name && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                    background: "linear-gradient(135deg, rgba(34, 34, 34, 0.9), rgba(24, 24, 24, 0.85))", 
+                    padding: "8px 14px",
+                    borderRadius: "7px",
+                    border: "1px solid rgba(250, 204, 21, 0.4)", 
+                    boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)",
+                    width: "fit-content",
+                    backdropFilter: "blur(9px)",
+                    transition: "all 0.25s ease-in-out",
+                    "&:hover": {
+                      boxShadow: "0px 5px 12px rgba(250, 204, 21, 0.3)",
+                      background: "linear-gradient(135deg, rgba(34, 34, 34, 0.95), rgba(24, 24, 24, 0.9))",
+                    },
+                  }}
+                >
+                  <BusinessIcon sx={{ fontSize: 18, color: "#FACC15" }} /> 
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: "#FACC15",
+                      fontWeight: 550,
+                      fontSize: "0.85rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    {booking.event.college.name}
+                  </Typography>
+                </Box>
+              )}
 
               </CardContent>
             </Card>

@@ -16,7 +16,7 @@ import {
   MenuItem,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import FestivalIcon from "@mui/icons-material/Festival";
+// import FestivalIcon from "@mui/icons-material/Festival";
 // import { getAllEvents } from "../api-helpers/api-helpers";
 import { Link } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
@@ -64,274 +64,283 @@ const Header = () => {
 
   return (
     <motion.div initial="hidden" animate="visible" variants={headerVariants}>
-      <AppBar
-        position="static"
-        sx={{
-          background: "linear-gradient(135deg, #1a1a1a 30%, #2c2c2c 100%)",
-          backdropFilter: "blur(10px)",
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
-          borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
-          height: "80px",
-        }}
-      >
-        <Toolbar
-          sx={{
+  <AppBar
+    position="static"
+    sx={{
+      background: "linear-gradient(135deg, #1a1a1a 30%, #2c2c2c 100%)",
+      backdropFilter: "blur(10px)",
+      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
+      borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+      height: "80px",
+    }}
+  >
+    <Toolbar
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        height: "100%",
+        px: { xs: 2, md: 4 },
+      }}
+    >
+      {/* Logo and Title */}
+      <Box display="flex" alignItems="center">
+        <Link
+          to="/"
+          style={{
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
-            height: "100%",
-            px: { xs: 2, md: 4 },
+            textDecoration: "none",
+            color: "inherit",
           }}
         >
-          {/* Logo and Title */}
-          <Box display="flex" alignItems="center">
-            <Link
-              to="/"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                textDecoration: "none",
-                color: "inherit",
-              }}
-            >
-              <FestivalIcon
-                fontSize="large"
-                sx={{ color: "#ffcc00", cursor: "pointer", mr: 2 }}
-              />
-              <Typography
-                variant="h5"
-                fontWeight="bold"
-                sx={{
-                  color: "white",
-                  letterSpacing: 2,
-                  transition: "color 0.3s",
-                  "&:hover": { color: "#ffcc00" },
-                }}
-              >
-                UniFesta
-              </Typography>
-            </Link>
-          </Box>
+           <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            width="40"
+            height="40"
+            fill="#ffcc00"
+            style={{ cursor: "pointer", marginRight: "16px" }}
+          >
+            <path d="M32 2L4 20v24l28 18 28-18V20L32 2zm0 6.8l22.4 14.4L32 38 9.6 23.2 32 8.8zM8 24.8L32 42l24-17.2V38L32 56 8 38v-13.2z"/>
+            <path d="M32 22l-8 6v12l8 6 8-6V28l-8-6zm0 4.8l4.8 3.6L32 34l-4.8-3.6L32 26.8z"/>
+          </svg>
+          <Typography
+            variant="h5"
+            sx={{
+              fontFamily: "'Inter', sans-serif", 
+              fontWeight: 600, 
+              color: "white",
+              letterSpacing: "0.5px", 
+              transition: "color 0.3s, transform 0.3s",
+              "&:hover": {
+                color: "#ffcc00",
+                transform: "translateY(-2px)", 
+              },
+            }}
+          >
+            UniFesta
+          </Typography>
+        </Link>
+      </Box>
 
-          {/* Desktop Navigation */}
-          {!isMobile && (
-            <Tabs
-              value={value}
-              onChange={(e, val) => setValue(val)}
-              textColor="inherit"
+      {/* Desktop Navigation */}
+      {!isMobile && (
+        <Tabs
+          value={value}
+          onChange={(e, val) => setValue(val)}
+          textColor="inherit"
+          sx={{
+            "& .MuiTab-root": {
+              fontSize: "1rem",
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: "500",
+              letterSpacing: "0.5px",
+              transition: "color 0.3s, transform 0.3s",
+              "&:hover": { color: "#ffcc00", transform: "translateY(-2px)" },
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: "#ffcc00",
+              height: "3px",
+            },
+          }}
+        >
+          {!isAdminLoggedIn && <Tab label="Events" component={Link} to="/events" />}
+
+          {!isAdminLoggedIn && !isUserLoggedIn && (
+            <Tab
+              key="auth"
+              label="Login"
+              component={Link}
+              to="/auth"
               sx={{
-                "& .MuiTab-root": {
-                  fontSize: "1rem",
-                  fontWeight: "500",
-                  letterSpacing: "0.5px",
-                  transition: "color 0.3s, transform 0.3s",
-                  "&:hover": { color: "#ffcc00", transform: "translateY(-2px)" },
+                textDecoration: "none",
+                "&.Mui-selected": {
+                  textDecoration: "none",
                 },
-                "& .MuiTabs-indicator": {
-                  backgroundColor: "#ffcc00",
-                  height: "3px",
+                "&:hover": {
+                  textDecoration: "none",
                 },
               }}
-            >
-              {!isAdminLoggedIn && <Tab label="Events" component={Link} to="/events" />}
+            />
+          )}
 
-              {!isAdminLoggedIn && !isUserLoggedIn && (
-                <Tab
-                  key="auth"
-                  label="Login"
-                  component={Link}
-                  to="/auth"
+          {/* Conditionally render User Profile and Logout */}
+          {isUserLoggedIn && !isAdminLoggedIn && (
+            <Box sx={{ display: "flex", alignItems: "center", ml: 3, mt: "5px" }}>
+              <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
+              <Avatar
+                  src="/avatar3.png" 
                   sx={{
-                    textDecoration: "none",
-                    "&.Mui-selected": {
-                      textDecoration: "none",
-                    },
+                    cursor: "pointer",
+                    width: 40,
+                    height: 40,
+                    transition: "transform 0.3s ease-in-out, border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
                     "&:hover": {
-                      textDecoration: "none",
+                      transform: "scale(1.1)",
                     },
                   }}
                 />
-              )}
+              </IconButton>
+              <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleCloseMenu}
+                sx={{
+                  mt: 1.5,
+                  "& .MuiMenu-paper": {
+                    background: "linear-gradient(135deg, #2c2c2c 30%, #1a1a1a 100%)",
+                    color: "white",
+                    borderRadius: "12px",
+                    minWidth: "180px",
+                    p: 1,
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
+                  },
+                }}
+              >
+                <MenuItem
+                  disabled
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#ffd800",
+                    fontSize: "1rem",
+                    textAlign: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {userProfile?.name || "User"}
+                </MenuItem>
 
-              {/* Conditionally render User Profile and Logout */}
-              {isUserLoggedIn && !isAdminLoggedIn && (
-                <Box sx={{ display: "flex", alignItems: "center", ml: 3 }}>
-                  <IconButton onClick={handleAvatarClick} sx={{ p: 0 }}>
-                    <Avatar
-                      src={userProfile?.avatar || "/default-avatar.png"}
-                      sx={{
-                        cursor: "pointer",
-                        width: 40,
-                        height: 40,
-                        border: "2px solid #e0e0e0",
-                        transition: "transform 0.3s ease-in-out, border-color 0.3s ease-in-out",
-                        "&:hover": {
-                          transform: "scale(1.1)",
-                          borderColor: "#ffcc00",
-                        },
-                      }}
-                    />
-                  </IconButton>
-
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseMenu}
-                    sx={{
-                      mt: 1.5,
-                      "& .MuiMenu-paper": {
-                        background: "linear-gradient(135deg, #2c2c2c 30%, #1a1a1a 100%)",
-                        color: "white",
-                        borderRadius: "12px",
-                        minWidth: "180px",
-                        p: 1,
-                        boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.5)",
-                      },
-                    }}
-                  >
-                    <MenuItem
-                      disabled
-                      sx={{
-                        fontWeight: "bold",
-                        color: "#ffcc00",
-                        fontSize: "1rem",
-                        textAlign: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      {userProfile?.name || "User"}
-                    </MenuItem>
-
-                    <MenuItem
-                      component={Link}
-                      to="/profile" // Use userId from Redux
-                      onClick={handleCloseMenu}
-                      sx={{
-                        "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
-                      }}
-                    >
-                      Profile
-                    </MenuItem>
-                    <MenuItem
-                      component={Link}
-                      to="/bookings"
-                      onClick={handleCloseMenu}
-                      sx={{
-                        "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
-                      }}
-                    >
-                      Bookings
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        logout(false);
-                        handleCloseMenu();
-                      }}
-                      sx={{
-                        "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
-                      }}
-                    >
-                      Logout
-                    </MenuItem>
-                  </Menu>
-                </Box>
-              )}
-
-              {/* Conditionally render Admin Dashboard and Logout */}
-              {isAdminLoggedIn && [
-                <Tab
-                  key="dashboard"
-                  label="Dashboard"
+                <MenuItem
                   component={Link}
-                  target="_blank"
-                  to="/admin/dashboard"
-                />,
-                <Tab
-                  key="admin-logout"
-                  label="Logout"
-                  onClick={() => logout(true)}
+                  to="/profile"
+                  onClick={handleCloseMenu}
+                  sx={{
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
+                  }}
+                >
+                  Profile
+                </MenuItem>
+                <MenuItem
                   component={Link}
-                  to="/"
-                />,
-              ]}
-            </Tabs>
+                  to="/bookings"
+                  onClick={handleCloseMenu}
+                  sx={{
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
+                  }}
+                >
+                  Bookings
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    logout(false);
+                    handleCloseMenu();
+                  }}
+                  sx={{
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.1)" },
+                  }}
+                >
+                  Logout
+                </MenuItem>
+              </Menu>
+            </Box>
           )}
 
-          {/* Mobile Menu (Hamburger Icon) */}
-          {isMobile && (
-            <IconButton
-              sx={{ color: "#ffffff" }}
-              onClick={() => setDrawerOpen(true)}
-            >
-              <MenuIcon fontSize="large" />
-            </IconButton>
-          )}
-        </Toolbar>
+          {/* Conditionally render Admin Dashboard and Logout */}
+          {isAdminLoggedIn && [
+            <Tab
+              key="dashboard"
+              label="Dashboard"
+              component={Link}
+              target="_blank"
+              to="/admin/dashboard"
+            />,
+            <Tab
+              key="admin-logout"
+              label="Logout"
+              onClick={() => logout(true)}
+              component={Link}
+              to="/"
+            />,
+          ]}
+        </Tabs>
+      )}
 
-        {/* Drawer for Mobile Navigation */}
-        <Drawer
-          anchor="right"
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
+      {/* Mobile Menu (Hamburger Icon) */}
+      {isMobile && (
+        <IconButton
+          sx={{ color: "#ffffff" }}
+          onClick={() => setDrawerOpen(true)}
         >
-          <Box
-            sx={{
-              width: 280,
-              background: "linear-gradient(135deg, #1a1a1a 30%, #2c2c2c 100%)",
-              height: "100vh",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "space-between",
-              color: "white",
-              padding: 2,
-            }}
-          >
-            <List>
-              <ListItem button component={Link} to="/" onClick={() => setDrawerOpen(false)}>
-                <ListItemText primary="Home" sx={{ color: "#ffcc00" }} />
+          <MenuIcon fontSize="large" />
+        </IconButton>
+      )}
+    </Toolbar>
+
+    {/* Drawer for Mobile Navigation */}
+    <Drawer
+      anchor="right"
+      open={drawerOpen}
+      onClose={() => setDrawerOpen(false)}
+    >
+      <Box
+        sx={{
+          width: 280,
+          background: "linear-gradient(135deg, #1a1a1a 30%, #2c2c2c 100%)",
+          height: "100vh",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          color: "white",
+          padding: 2,
+        }}
+      >
+        <List>
+          <ListItem button component={Link} to="/" onClick={() => setDrawerOpen(false)}>
+            <ListItemText primary="Home" sx={{ color: "#ffcc00" }} />
+          </ListItem>
+          {!isAdminLoggedIn && (
+            <ListItem button component={Link} to="/events" onClick={() => setDrawerOpen(false)}>
+              <ListItemText primary="Events" sx={{ color: "#ffcc00" }} />
+            </ListItem>
+          )}
+          {!isUserLoggedIn && !isAdminLoggedIn && (
+            <ListItem button component={Link} to="/auth" onClick={() => setDrawerOpen(false)}>
+              <ListItemText primary="Login" sx={{ color: "#ffcc00" }} />
+            </ListItem>
+          )}
+
+          {/* User Logged In Options */}
+          {isUserLoggedIn && !isAdminLoggedIn && (
+            <>
+              <ListItem button component={Link} to="/profile" onClick={() => setDrawerOpen(false)}>
+                <ListItemText primary="Profile" sx={{ color: "#ffcc00" }} />
               </ListItem>
-              {!isAdminLoggedIn && (
-                <ListItem button component={Link} to="/events" onClick={() => setDrawerOpen(false)}>
-                  <ListItemText primary="Events" sx={{ color: "#ffcc00" }} />
-                </ListItem>
-              )}
-              {!isUserLoggedIn && !isAdminLoggedIn && (
-                <ListItem button component={Link} to="/auth" onClick={() => setDrawerOpen(false)}>
-                  <ListItemText primary="Login" sx={{ color: "#ffcc00" }} />
-                </ListItem>
-              )}
+              <ListItem button component={Link} to="/bookings" onClick={() => setDrawerOpen(false)}>
+                <ListItemText primary="Bookings" sx={{ color: "#ffcc00" }} />
+              </ListItem>
+              <ListItem button onClick={() => { logout(false); setDrawerOpen(false); }}>
+                <ListItemText primary="Logout" sx={{ color: "#ffcc00" }} />
+              </ListItem>
+            </>
+          )}
 
-              {/* User Logged In Options */}
-              {isUserLoggedIn && !isAdminLoggedIn && (
-                <>
-                  <ListItem button component={Link} to="/profile" onClick={() => setDrawerOpen(false)}>
-                    <ListItemText primary="Profile" sx={{ color: "#ffcc00" }} />
-                  </ListItem>
-                  <ListItem button component={Link} to="/bookings" onClick={() => setDrawerOpen(false)}>
-                    <ListItemText primary="Bookings" sx={{ color: "#ffcc00" }} />
-                  </ListItem>
-                  <ListItem button onClick={() => { logout(false); setDrawerOpen(false); }}>
-                    <ListItemText primary="Logout" sx={{ color: "#ffcc00" }} />
-                  </ListItem>
-                </>
-              )}
-
-              {/* Admin Options */}
-              {isAdminLoggedIn && (
-                <>
-                  <ListItem button component={Link} to="/admin/dashboard" onClick={() => setDrawerOpen(false)}>
-                    <ListItemText primary="Dashboard" sx={{ color: "#ffcc00" }} />
-                  </ListItem>
-                  <ListItem button onClick={() => { logout(true); setDrawerOpen(false); }}>
-                    <ListItemText primary="Logout" sx={{ color: "#ffcc00" }} />
-                  </ListItem>
-                </>
-              )}
-            </List>
-          </Box>
-        </Drawer>
-      </AppBar>
-    </motion.div>
+          {/* Admin Options */}
+          {isAdminLoggedIn && (
+            <>
+              <ListItem button component={Link} to="/admin/dashboard" onClick={() => setDrawerOpen(false)}>
+                <ListItemText primary="Dashboard" sx={{ color: "#ffcc00" }} />
+              </ListItem>
+              <ListItem button onClick={() => { logout(true); setDrawerOpen(false); }}>
+                <ListItemText primary="Logout" sx={{ color: "#ffcc00" }} />
+              </ListItem>
+            </>
+          )}
+        </List>
+      </Box>
+    </Drawer>
+  </AppBar>
+</motion.div>
   );
 };
 

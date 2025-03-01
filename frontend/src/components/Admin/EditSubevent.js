@@ -128,14 +128,17 @@ const EditSubevent = () => {
           </Typography>
 
           <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Autocomplete
-                options={["Gaming", "Workshop", "Sports", "Technical", "Cultural"]}
-                value={subEventData.type}
-                onChange={(event, newValue) => setSubEventData({ ...subEventData, type: newValue || "" })}
-                renderInput={(params) => <TextField {...params} label="Sub-Event Type" variant="outlined" />}
-              />
-            </Grid>
+          <Grid item xs={12}>
+  <Autocomplete
+    options={["Gaming", "Workshop", "Sports", "Technical", "Cultural", "Games & Puzzles"]}
+    value={subEventData.type}
+    freeSolo // Allows manual input
+    onChange={(event, newValue) => setSubEventData({ ...subEventData, type: newValue || "" })}
+    onInputChange={(event, newInputValue) => setSubEventData({ ...subEventData, type: newInputValue || "" })}
+    renderInput={(params) => <TextField {...params} label="Sub-Event Type" variant="outlined" />}
+  />
+</Grid>
+
 
             <Grid item xs={12}>
               <TextField

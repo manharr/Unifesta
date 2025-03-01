@@ -23,14 +23,13 @@ const AdminDashboard = () => {
   const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = useState(null);
   const [collegeCount, setCollegeCount] = useState(0); 
-  const [eventCount, setEventCount] = useState(0); // State for total events
-  const [bookingCount, setBookingCount] = useState(0); // State for total registrations
+  const [eventCount, setEventCount] = useState(0);
+  const [bookingCount, setBookingCount] = useState(0); 
 
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Colleges
         const colleges = await getAllColleges();
         if (colleges && Array.isArray(colleges)) {
           setCollegeCount(colleges.length);
@@ -38,7 +37,6 @@ const AdminDashboard = () => {
           console.error("Invalid college data format:", colleges);
         }
   
-        // Events
         const response = await getAllEvents();
         // console.log("Events API Response:", response); // Debugging
   
@@ -115,9 +113,9 @@ const AdminDashboard = () => {
         {/* Dashboard Stats */}
         <Grid container spacing={3} sx={{ mt: 4 }}>
           {[
-            { title: "Total Events", value: eventCount }, // Dynamic Event Count
+            { title: "Total Events", value: eventCount }, 
             { title: "Total Registrations", value: bookingCount  },
-            { title: "Total Colleges", value: collegeCount }, // Dynamic College Count
+            { title: "Total Colleges", value: collegeCount }, 
           ].map((stat, index) => (
             <Grid item xs={12} sm={6} md={4} key={index}>
               <Paper elevation={3} sx={{ p: 3, textAlign: "center" }}>

@@ -24,7 +24,7 @@ const Events = () => {
           sx={{
             fontWeight: "bold",
             color: "#c9c616",
-            fontFamily: "'Roboto', sans-serif",
+            fontFamily: "'Inter', sans-serif",
           }}
         >
           ALL EVENTS

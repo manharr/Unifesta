@@ -27,12 +27,11 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
 
     const [selectedGame, setSelectedGame] = useState(null);
     const [errors, setErrors] = useState({});
-    const userId = localStorage.getItem("userId"); // Example, modify as needed
+    const userId = localStorage.getItem("userId"); 
     
     useEffect(() => {
         if (!userId) return;
 
-        // Fetch user details when component mounts
         const fetchUserDetails = async () => {
             try {
                 const user = await getUserById(userId);
@@ -54,10 +53,9 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
 
 
     useEffect(() => {
-        if (!subEvent) return; // Prevent unnecessary resets
+        if (!subEvent) return; 
         setSelectedGame(null);
         
-        // Automatically set eventType for non-Gaming events
         setFormData((prev) => ({
             ...prev,
             eventType: subEvent?.type !== "Gaming" ? subEvent.type : "",
@@ -88,9 +86,8 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
     const validateForm = () => {
         const newErrors = {};
         
-        // Validate all required fields
         Object.keys(formData).forEach((key) => {
-            if (!formData[key] && key !== "eventType") { // Exclude eventType from general validation
+            if (!formData[key] && key !== "eventType") { 
                 newErrors[key] = "This field is required";
             }
         });
@@ -100,7 +97,6 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
             newErrors.phone = "Please enter a valid number.";
         }
 
-        // Only validate 'eventType' if it's a Gaming event
         if (subEvent?.type === "Gaming" && !formData.eventType) {
             newErrors.eventType = "Please select a game";
         }
@@ -108,7 +104,6 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
-    // rzp_test_z3yR89BoU8AMms
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -129,15 +124,13 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
             };
     
             try {
-                // Determine the correct amount based on event type
                 const eventAmount = subEvent?.type === "Gaming"
                 ? selectedGame?.entryFee || 0
                 : subEvent?.details?.[0]?.entryFee || 0;
     
-                // If amount is 0, no Razorpay should open
                 if (eventAmount === 0) {
                     alert("No payment required for this event.");
-                    handleClose(); // Close the dialog if no payment is required
+                    handleClose(); 
                 
                     try {
                         const bookingResponse = await newBooking(bookingData);
@@ -155,7 +148,6 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
                     return;
                 }
     
-                // Create Razorpay order only if payment is required
                 const paymentData = {
                     userId,
                     eventId: subEvent.event,
@@ -168,13 +160,13 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
     
                 // Now open the Razorpay payment gateway
                 const options = {
-                    key: process.env.RAZORPAY_KEY_ID,  // Replace with your Razorpay key
-                    amount: razorpayOrder.amount,  // The order amount in paise
+                    key: process.env.RAZORPAY_KEY_ID,  
+                    amount: razorpayOrder.amount,  
                     currency: razorpayOrder.currency,
-                    name: "UniFesta", // You can set the event or company name here
-                    description: "Booking for " + subEvent.event, // Event description
-                    image: "/logo1.png",  // Optionally add a logo
-                    order_id: razorpayOrder.id,  // The order ID you received
+                    name: "UniFesta", 
+                    description: "Booking for " + subEvent.event, 
+                    image: "/logo1.png",  
+                    order_id: razorpayOrder.id,  
                     handler: async function (response) {
                         // Handle successful payment here
                         console.log("Payment Successful:", response);
@@ -184,18 +176,14 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
                             signature: response.razorpay_signature,
                         };
     
-                        // Verify the payment on the server
                         const paymentVerificationResponse = await newOrder(paymentData);
                         console.log("Payment Verification Response:", paymentVerificationResponse);
     
                         // Only create the booking after payment is successfully verified
                         if (paymentVerificationResponse.success) {
-                            // Now create the booking
                             const bookingResponse = await newBooking(bookingData);
                             console.log("Booking Created:", bookingResponse);
-    
-                            // Redirect to registration success page after successful booking and payment
-                            window.location.href = '/success'; // Adjust this route as needed
+                            window.location.href = '/success'; 
                         } else {
                             alert("Payment verification failed. Please try again.");
                         }
@@ -209,14 +197,14 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
                         address: formData.college,
                     },
                     theme: {
-                        color: "#F37254", // Set a theme color (optional)
+                        color: "#F37254", 
                     },
                 };
     
                 const rzp = new window.Razorpay(options);
-                rzp.open();  // Open the Razorpay payment modal
+                rzp.open();  
     
-                handleClose();  // Close the dialog after the order is placed
+                handleClose(); 
             } catch (error) {
                 console.error("Error during booking or Razorpay order:", error);
             }
@@ -235,11 +223,11 @@ const RegisterForm = ({ open, handleClose, subEvent }) => {
         sx={{
             fontWeight: "bold",
             textAlign: "center",
-            bgcolor: "#1A1D21", // Darker header for contrast
+            bgcolor: "#1A1D21", 
             color: "#FFFFFF",
             fontSize: "1.5rem",
             p: 3,
-            borderBottom: "1px solid #2C2F34", // Subtle border for separation
+            borderBottom: "1px solid #2C2F34", 
         }}
     >
         Register for {subEvent?.type}

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar, Alert, Typography, Box, Tooltip } from '@mui/material';
+import { Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Snackbar, Alert, Typography, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Add as AddIcon, Visibility as ViewIcon } from '@mui/icons-material';
 import Sidebar from './Sidebar';
 import { getAllEvents } from '../../api-helpers/api-helpers';
+import { Add as AddIcon, Visibility as ViewIcon } from '@mui/icons-material';
 
-const ManageSubevent = () => {
+const ManageSponsors = () => {
   const [events, setEvents] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -30,11 +30,9 @@ const ManageSubevent = () => {
     <Box sx={{ display: 'flex', bgcolor: '#F5F5F5', minHeight: '100vh' }}>
       <Sidebar />
       <Box sx={{ flexGrow: 1, p: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-          <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333' }}>
-            Manage Sub-events
-          </Typography>
-        </Box>
+        <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 3 }}>
+          Manage Sponsors
+        </Typography>
 
         <Paper elevation={3} sx={{ p: 2 }}>
           <TableContainer>
@@ -51,42 +49,29 @@ const ManageSubevent = () => {
                   events.map((event, index) => (
                     <TableRow key={event._id} sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
                       <TableCell sx={{ fontSize: '1rem', color: '#333' }}>{index + 1}</TableCell>
-                      <TableCell sx={{ fontWeight: 'bold',fontSize: '1rem', color: '#333' }}>{event.title}</TableCell>
+                      <TableCell sx={{ fontSize: '1rem', color: '#333', fontWeight: 'bold' }}>{event.title}</TableCell>
                       <TableCell>
-                        {/* View Sub-events Button */}
-                        <Tooltip title="View Sub-events">
-                          <Button
-                            component={Link}
-                            to={`/admin/view-subevent/${event._id}`} 
-                            variant="contained"
-                            sx={{
-                              bgcolor: '#1976D2',
-                              color: '#fff',
-                              mr: 2,
-                              '&:hover': { bgcolor: '#1565C0' },
-                            }}
-                            startIcon={<ViewIcon />}
-                          >
-                            View Sub-events
-                          </Button>
-                        </Tooltip>
+                        <Button
+                          component={Link}
+                          to={`/admin/add-sponsor/${event._id}`}
+                          variant="contained"
+                          sx={{ mr: 1, bgcolor: '#4CAF50',
+                          color: '#fff', '&:hover': { bgcolor: '#388E3C' } }}
+                          startIcon={<AddIcon/>}
 
-                        {/* Add Sub-event Button */}
-                        <Tooltip title="Add Sub-event">
-                          <Button
-                            component={Link}
-                            to={`/admin/add-subevent/${event._id}`}
-                            variant="contained"
-                            sx={{
-                              bgcolor: '#4CAF50',
-                              color: '#fff',
-                              '&:hover': { bgcolor: '#388E3C' },
-                            }}
-                            startIcon={<AddIcon />}
-                          >
-                            Add Sub-event
-                          </Button>
-                        </Tooltip>
+                        >
+                          Add Sponsors
+                        </Button>
+                        <Button
+                          component={Link}
+                          to={`/admin/view-sponsor/${event._id}`}
+                          variant="contained"
+                          sx={{ bgcolor: '#1976D2',
+                          color: '#fff', '&:hover': { bgcolor: '#1565C0' } }}
+                          startIcon={<ViewIcon />}
+                        >
+                          View Sponsors
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))
@@ -112,4 +97,4 @@ const ManageSubevent = () => {
   );
 };
 
-export default ManageSubevent;
+export default ManageSponsors;

@@ -14,7 +14,7 @@ import Sidebar from "./Sidebar";
 import { getCollegeDetails, updateCollegeDetails } from "../../api-helpers/api-helpers";
 
 const EditCollege = () => {
-  const { id } = useParams(); // Get the college ID from the URL
+  const { id } = useParams(); 
   const navigate = useNavigate();
 
   const [collegeData, setCollegeData] = useState({
@@ -30,7 +30,7 @@ const EditCollege = () => {
   useEffect(() => {
     const fetchCollegeDetailsData = async () => {
       try {
-        const college = await getCollegeDetails(id); // Fetch college data from API helper
+        const college = await getCollegeDetails(id);
         setCollegeData(college);
       } catch (err) {
         console.error(err);
@@ -43,12 +43,10 @@ const EditCollege = () => {
     fetchCollegeDetailsData();
   }, [id]);
 
-  // Handle input change
   const handleChange = (e) => {
     setCollegeData({ ...collegeData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission (Update College)
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -60,13 +58,12 @@ const EditCollege = () => {
         return;
       }
 
-      await updateCollegeDetails(id, collegeData, token); // Update college details via API helper
+      await updateCollegeDetails(id, collegeData, token); 
 
       setSnackbarMessage("College updated successfully!");
       setSnackbarSeverity("success");
       setOpenSnackbar(true);
 
-      // Redirect back to Manage Colleges page
       setTimeout(() => navigate("/admin/manage-colleges"), 1500);
     } catch (err) {
       console.error(err);

@@ -5,6 +5,7 @@ import { Card, CardContent, CardMedia, Typography, Button, Box, Grid, Container,
 import { useSelector } from "react-redux";
 import RegisterForm from "./RegisterForm";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import SponsorSlider from "./SponsorSlider";
 
 const Booking = () => {
   const [event, setEvent] = useState(null);
@@ -17,7 +18,7 @@ const Booking = () => {
   const { isLoggedIn } = useSelector((state) => state.user);
 
   useEffect(() => {
-    let isMounted = true; // Prevent state updates if component unmounts
+    let isMounted = true; 
   
     const fetchEventData = async () => {
       try {
@@ -33,16 +34,15 @@ const Booking = () => {
       }
     };
   
-    fetchEventData(); // Fetch fresh data on ID change
+    fetchEventData(); 
   
-    const interval = setInterval(fetchEventData, 5000); // Live updates
+    const interval = setInterval(fetchEventData, 5000); 
   
     return () => {
-      isMounted = false; // Prevent setting state after unmount
+      isMounted = false; 
       clearInterval(interval);
     };
   }, [id]);
-    // Re-run effect when id changes
 
   const handleOpenRegisterForm = (subEvent) => {
     if (!isLoggedIn) {
@@ -102,8 +102,8 @@ const Booking = () => {
                     height="350"
                     image={
                       event.images[0]?.startsWith("http")
-                        ? event.images[0] // Already full URL
-                        : `http://localhost:5000${event.images[0]}` // Append backend URL if needed
+                        ? event.images[0] 
+                        : `http://localhost:5000${event.images[0]}` 
                     }   
                     alt="Event Poster"
                     sx={{
@@ -129,6 +129,7 @@ const Booking = () => {
                   textTransform: "uppercase",
                   letterSpacing: "1px",
                   fontFamily: "'Inter', sans-serif",
+                  
                 }}
               >
                 {event.title}
@@ -229,6 +230,7 @@ const Booking = () => {
                 position: "relative",
                 mt: 2,
                 cursor: "pointer",
+                
                 "&:hover .rules-content": {
                   opacity: 1,
                   visibility: "visible",
@@ -239,16 +241,16 @@ const Booking = () => {
               {/* Hover Trigger */}
               <Box
                 sx={{
-                  bgcolor: "#FF0000", // Bold, pure red
+                  bgcolor: "#FF0000", 
                   p: 1.5,
                   borderRadius: "8px",
                   display: "inline-flex",
                   alignItems: "center",
                   gap: 1,
-                  boxShadow: "0px 2px 8px rgba(255, 0, 0, 0.3)", // Subtle red shadow
+                  boxShadow: "0px 2px 8px rgba(255, 0, 0, 0.3)",
                   transition: "all 0.3s ease",
                   "&:hover": {
-                    bgcolor: "#CC0000", // Darker red on hover
+                    bgcolor: "#CC0000",
                   },
                 }}
               >
@@ -256,22 +258,22 @@ const Booking = () => {
                   variant="body1"
                   sx={{
                     fontWeight: "700",
-                    color: "#FFFFFF", // White text for contrast
+                    color: "#FFFFFF", 
                     fontFamily: "'Inter', sans-serif",
                   }}
                 >
-                  Rules
+                  RULES
                 </Typography>
                 <Box
                   sx={{
                     width: "24px",
                     height: "24px",
-                    bgcolor: "#2A2A2A", // Dark background for the icon
+                    bgcolor: "#2A2A2A", 
                     borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    color: "#FF0000", // Bold red accent for the icon
+                    color: "#FF0000", 
                     fontSize: "0.9rem",
                     fontWeight: "700",
                   }}
@@ -285,20 +287,21 @@ const Booking = () => {
                 className="rules-content"
                 sx={{
                   position: "absolute",
-                  top: "110%", // Slightly lower for a floating effect
+                  top: "110%", 
                   left: 0,
-                  bgcolor: "#1E1E1E", // Darker background for contrast
+                  bgcolor: "#1E1E1E", 
                   p: 2,
-                  borderRadius: "12px", // Slightly larger border radius
-                  boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.6)", // Deeper shadow for depth
+                  borderRadius: "12px", 
+                  boxShadow: "0px 12px 24px rgba(0, 0, 0, 0.6)", 
                   mt: 1,
                   opacity: 0,
                   visibility: "hidden",
                   transform: "translateY(-10px)",
                   transition: "all 0.3s ease",
                   zIndex: 1,
-                  width: "340px", // Slightly wider for better readability
-                  border: "1px solid rgba(255, 0, 0, 0.2)", // Subtle red border
+                  
+                  width: "340px", 
+                  border: "1px solid rgba(255, 0, 0, 0.2)", 
                 }}
               >
                 {/* Map through the rules array and display each rule with a divider */}
@@ -309,7 +312,7 @@ const Booking = () => {
                         display: "flex",
                         alignItems: "flex-start",
                         gap: 1.5,
-                        mb: 2, // Margin bottom for spacing
+                        mb: 2,
                       }}
                     >
                       {/* Rule Icon */}
@@ -317,15 +320,15 @@ const Booking = () => {
                         sx={{
                           width: "24px",
                           height: "24px",
-                          bgcolor: "#FF0000", // Red icon background
-                          borderRadius: "6px", // Slightly rounded corners
+                          bgcolor: "#FF0000",
+                          borderRadius: "6px",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          color: "#FFFFFF", // White icon color
+                          color: "#FFFFFF", 
                           fontSize: "0.9rem",
                           fontWeight: "700",
-                          flexShrink: 0, // Prevent icon from shrinking
+                          flexShrink: 0, 
                           boxShadow: "0px 2px 6px rgba(255, 0, 0, 0.4)",
                         }}
                       >
@@ -335,7 +338,7 @@ const Booking = () => {
                       <Typography
                         variant="body2"
                         sx={{
-                          color: "#E0E0E0", // Light text for readability
+                          color: "#E0E0E0", 
                           lineHeight: 1.6,
                           fontFamily: "'Inter', sans-serif",
                           fontSize: "0.9rem",
@@ -348,8 +351,8 @@ const Booking = () => {
                     {index !== event.rules.length - 1 && (
                       <Divider
                         sx={{
-                          my: 1.5, // Margin top and bottom
-                          bgcolor: "rgba(255, 255, 255, 0.1)", // Subtle white divider
+                          my: 1.5, 
+                          bgcolor: "rgba(255, 255, 255, 0.1)", 
                         }}
                       />
                     )}
@@ -393,7 +396,7 @@ const Booking = () => {
           <Grid item xs={12} sm={6} md={6} key={subEvent._id}>
             <Card
               sx={{
-            background: "linear-gradient(135deg, #1E1E1E 30%, #2A2A2A 100%)", // Added gradient
+            background: "linear-gradient(135deg, #1E1E1E 30%, #2A2A2A 100%)",
             borderRadius: "12px",
             boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.4)",
             overflow: "hidden",
@@ -401,7 +404,7 @@ const Booking = () => {
             display: "flex",
             flexDirection: "column",
             transition: "transform 0.3s ease, box-shadow 0.3s ease",
-            border: "1px solid rgba(255, 255, 255, 0.1)", // Added subtle border
+            border: "1px solid rgba(255, 255, 255, 0.1)", 
             "&:hover": {
               transform: "translateY(-5px)",
               boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.6)",
@@ -446,16 +449,16 @@ const Booking = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 0.7, // Balanced spacing
+                gap: 0.7, 
                 background: "linear-gradient(135deg, rgba(30, 41, 59, 0.85), rgba(17, 24, 39, 0.9))",
-                p: 1.0, // Medium padding
-                borderRadius: "7px", // Slightly rounded corners
-                border: "1px solid rgba(255, 255, 255, 0.14)", // Subtle border
-                boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)", // Soft but noticeable shadow
+                p: 1.0, 
+                borderRadius: "7px",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                boxShadow: "0px 3px 8px rgba(0, 0, 0, 0.25)",
                 width: "fit-content",
                 maxWidth: "78%",
                 mx: "auto",
-                backdropFilter: "blur(9px)", // Light blur for a smooth UI
+                backdropFilter: "blur(9px)", 
                 transition: "all 0.25s ease-in-out",
                 "&:hover": {
                   boxShadow: "0px 5px 12px rgba(0, 0, 0, 0.35)",
@@ -468,7 +471,7 @@ const Booking = () => {
                 component="span"
                 sx={{
                   fontWeight: 550,
-                  fontSize: "13px", // Medium text
+                  fontSize: "13px",
                   color: "#E2E8F0",
                   textTransform: "uppercase",
                   letterSpacing: "0.45px",
@@ -488,7 +491,7 @@ const Booking = () => {
                   key={detailIndex}
                   sx={{
                     p: 3,
-                    background: "linear-gradient(135deg, #2A2A2A 30%, #1E1E1E 100%)", // Added gradient
+                    background: "linear-gradient(135deg, #2A2A2A 30%, #1E1E1E 100%)",
                     borderRadius: "12px",
                     border: "1px solid #444",
                     width: "100%",
@@ -666,26 +669,26 @@ const Booking = () => {
                     )
                   ? "FULL"
                   : "Register"}
-              </Button>
-            </Box>
-          </CardContent>
-        </Card>
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))
+        ) : (
+          <Typography
+            variant="h6"
+            textAlign="center"
+            sx={{
+              color: "#BB86FC",
+              width: "100%",
+              fontFamily: "'Inter', sans-serif",
+            }}
+          >
+            No sub-events available.
+          </Typography>
+        )}
       </Grid>
-    ))
-  ) : (
-    <Typography
-      variant="h6"
-      textAlign="center"
-      sx={{
-        color: "#BB86FC",
-        width: "100%",
-        fontFamily: "'Inter', sans-serif",
-      }}
-    >
-      No sub-events available.
-    </Typography>
-  )}
-</Grid>
 
           {/* Register Form Dialog */}
           <RegisterForm open={openDialog} handleClose={handleCloseRegisterForm} subEvent={selectedSubEvent} />
@@ -705,8 +708,11 @@ const Booking = () => {
               Please log in to register for events.
             </Alert>
           </Snackbar>
+          <SponsorSlider eventId={id} />
         </Box>
-      ) : (
+      )
+       : (
+        
         <Typography
           variant="h6"
           textAlign="center"
@@ -719,53 +725,54 @@ const Booking = () => {
         </Typography>
       )}
 
-{/* COORDINATORS CONTACT INFO */}
-{event && event.coordinatorsContact && event.coordinatorsContact.length > 0 && (
-  <Box
-    mt={4}
-    sx={{
-      background: "linear-gradient(135deg, #0F0F0F, #1A1A1A)",
-      p: 4,
-      borderRadius: 3,
-      boxShadow: "0px 6px 18px rgba(0, 0, 0, 0.3)",
-      width: "100%",  // Takes full width
-      maxWidth: "1200px", // Constrains it to a reasonable max size
-      mx: "auto",
-    }}
-  >
-    <Typography
-      variant="h5"
-      gutterBottom
-      sx={{
-        color: "#FFFFFF",
-        fontWeight: 700,
-        fontFamily: "'Inter', sans-serif",
-        mb: 3,
-        textAlign: "center",
-        textTransform: "uppercase",
-        letterSpacing: 1.1,
-        fontSize: "22px",
-      }}
-    >
-      Event Co-ordinator
-    </Typography>
 
-    <Grid container spacing={3} justifyContent="center">
-      {event.coordinatorsContact.map((coordinator, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}> {/* Adjusting layout for responsiveness */}
-          <Paper
-            elevation={4}
-            sx={{
-              p: 3,
-              borderRadius: 2,
-              background: "linear-gradient(145deg, #1E1E1E, #252525)",
-              transition: "transform 0.3s, box-shadow 0.3s",
-              "&:hover": {
-                transform: "translateY(-4px)",
-                boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.35)",
-              },
-            }}
-          >
+    {/* COORDINATORS CONTACT INFO */}
+    {event && event.coordinatorsContact && event.coordinatorsContact.length > 0 && (
+      <Box
+        mt={4}
+        sx={{
+          background: "linear-gradient(135deg, #0F0F0F, #1A1A1A)",
+          p: 4,
+          borderRadius: 3,
+          boxShadow: "0px 6px 18px rgba(0, 0, 0, 0.3)",
+          width: "100%",  
+          maxWidth: "1200px",
+          mx: "auto",
+        }}
+      >
+        <Typography
+          variant="h5"
+          gutterBottom
+          sx={{
+            color: "#FFFFFF",
+            fontWeight: 700,
+            fontFamily: "'Inter', sans-serif",
+            mb: 3,
+            textAlign: "center",
+            textTransform: "uppercase",
+            letterSpacing: 1.1,
+            fontSize: "22px",
+          }}
+        >
+          Event Co-ordinator
+        </Typography>
+
+        <Grid container spacing={3} justifyContent="center">
+          {event.coordinatorsContact.map((coordinator, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}> 
+              <Paper
+                elevation={4}
+                sx={{
+                  p: 3,
+                  borderRadius: 2,
+                  background: "linear-gradient(145deg, #1E1E1E, #252525)",
+                  transition: "transform 0.3s, box-shadow 0.3s",
+                  "&:hover": {
+                    transform: "translateY(-4px)",
+                    boxShadow: "0px 6px 20px rgba(0, 0, 0, 0.35)",
+                  },
+                }}
+              >
             <Typography
               variant="h6"
               sx={{

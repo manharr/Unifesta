@@ -114,7 +114,7 @@ const ManageColleges = () => {
                 {colleges.length > 0 ? (
                   colleges.map((college) => (
                     <TableRow key={college._id} sx={{ "&:nth-of-type(odd)": { bgcolor: "#fafafa" } }}>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333" }}>
+                      <TableCell sx={{ fontWeight: 'bold', fontSize: "1rem", color: "#333" }}>
                         {college.name}
                       </TableCell>
                       <TableCell sx={{ fontSize: "1rem", color: "#333" }}>

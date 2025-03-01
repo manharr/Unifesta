@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Table,
   TableBody,
@@ -17,28 +17,39 @@ import {
 import Sidebar from "./Sidebar";
 import { getAllBookings, deleteBooking } from "../../api-helpers/api-helpers";
 import { Delete as DeleteIcon } from "@mui/icons-material";
+import { useSearchParams } from "react-router-dom";
 
 const ManageReg = () => {
   const [bookings, setBookings] = useState([]);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
+  const [searchParams] = useSearchParams();
+  const eventId = searchParams.get("event"); // Get event ID from URL
 
-  useEffect(() => {
-    fetchBookings();
-  }, []);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       const data = await getAllBookings();
-      setBookings(data.bookings || []);
+      let filteredBookings = data.bookings || [];
+
+      if (eventId) {
+        filteredBookings = filteredBookings.filter(
+          (booking) => booking.event?._id === eventId
+        );
+      }
+
+      setBookings(filteredBookings);
     } catch (err) {
       console.error("Error fetching bookings:", err);
       setSnackbarMessage("Failed to load registrations.");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
     }
-  };
+  }, [eventId]);
+
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
 
   const handleDelete = async (id) => {
     try {
@@ -58,18 +69,38 @@ const ManageReg = () => {
     <Box sx={{ display: "flex", bgcolor: "#F5F5F5", minHeight: "100vh", overflow: "hidden" }}>
       <Sidebar />
       <Box sx={{ flexGrow: 1, p: 3, maxWidth: "100vw", overflowX: "hidden" }}>
-        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#333", mb: 3 }}>
-          Manage Registrations
+        <Typography variant="h4" sx={{ fontWeight: "bold", color: "#333", mb: 3, textAlign: "center" }}>
+          {eventId ? "Event-Specific Registrations" : "Manage All Registrations"}
         </Typography>
 
         <Paper elevation={3} sx={{ p: 2, overflow: "hidden" }}>
-          <TableContainer sx={{ maxWidth: "100%", overflowX: "auto" }}>
-            <Table sx={{ minWidth: "100%" }}>
+          <TableContainer sx={{ width: "100%", overflowX: "hidden" }}>
+            <Table sx={{ tableLayout: "fixed", width: "100%" }}>
               <TableHead>
                 <TableRow sx={{ bgcolor: "#eeeeee" }}>
-                  {["Ticket Number", "Event", "Sub-Event", "User", "Email", "Contact", "College", "Registered On", "Actions"].map((header, idx) => (
-                    <TableCell key={idx} sx={{ fontWeight: "bold", fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                      {header}
+                  {[
+                    { label: "Ticket Number", width: "120px" },
+                    { label: "Event", width: "150px" },
+                    { label: "Sub-Event", width: "180px" },
+                    { label: "User", width: "150px" },
+                    { label: "Email", width: "200px" },
+                    { label: "Contact", width: "150px" },
+                    { label: "College", width: "200px" },
+                    { label: "Registered On", width: "150px" },
+                    { label: "Actions", width: "100px" },
+                  ].map((column, idx) => (
+                    <TableCell
+                      key={idx}
+                      sx={{
+                        fontWeight: "bold",
+                        fontSize: "1rem",
+                        color: "#333",
+                        maxWidth: column.width,
+                        wordWrap: "break-word",
+                        whiteSpace: "normal",
+                      }}
+                    >
+                      {column.label}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -77,31 +108,15 @@ const ManageReg = () => {
               <TableBody>
                 {bookings.length > 0 ? (
                   bookings.map((booking) => (
-                    <TableRow key={booking._id} sx={{ "&:nth-of-type(odd)": { bgcolor: "#fafafa" }, height: "60px" }}>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", fontWeight: "bold", whiteSpace: "nowrap" }}>
-                        {booking.ticketNumber || "N/A"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {booking.event?.title || "N/A"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {booking.subEvent?.description || "N/A"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {booking.user?.name || "Unknown"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {booking.user?.email || "N/A"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {booking.contact || "N/A"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {booking.college || "N/A"}
-                      </TableCell>
-                      <TableCell sx={{ fontSize: "1rem", color: "#333", whiteSpace: "nowrap" }}>
-                        {new Date(booking.registeredOn).toLocaleDateString()}
-                      </TableCell>
+                    <TableRow key={booking._id} sx={{ "&:nth-of-type(odd)": { bgcolor: "#fafafa" } }}>
+                      <TableCell sx={{ fontWeight: "bold" }}>{booking.ticketNumber || "N/A"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{booking.event?.title || "N/A"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{booking.subEvent?.description || "N/A"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{booking.user?.name || "Unknown"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{booking.user?.email || "N/A"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{booking.contact || "N/A"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{booking.college || "N/A"}</TableCell>
+                      <TableCell sx={{ wordWrap: "break-word" }}>{new Date(booking.registeredOn).toLocaleDateString()}</TableCell>
                       <TableCell>
                         <Tooltip title="Delete Registration">
                           <IconButton
@@ -120,7 +135,7 @@ const ManageReg = () => {
                 ) : (
                   <TableRow>
                     <TableCell colSpan={9} sx={{ textAlign: "center", fontSize: "1rem", color: "#777", py: 2 }}>
-                      No registrations found.
+                      {eventId ? "No registrations found for this event." : "No registrations found."}
                     </TableCell>
                   </TableRow>
                 )}

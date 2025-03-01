@@ -78,7 +78,7 @@ const ManageEvent = () => {
                   events.map((event, index) => (
                     <TableRow key={event._id} sx={{ '&:nth-of-type(odd)': { bgcolor: '#fafafa' } }}>
                       <TableCell sx={{ fontSize: '1rem', color: '#333' }}>{index + 1}</TableCell>
-                      <TableCell sx={{ fontSize: '1rem', color: '#333' }}>{event.title}</TableCell>
+                      <TableCell sx={{ fontSize: '1rem', color: '#333', fontWeight: "bold" }}>{event.title}</TableCell>
                       <TableCell sx={{ fontSize: '1rem', color: '#333' }}>{event.college?.name}</TableCell>
                       <TableCell sx={{ fontSize: '1rem', color: '#333' }}>{event.location}</TableCell>
                       <TableCell>

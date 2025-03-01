@@ -159,61 +159,60 @@ const ViewEvent = () => {
             )}
 
             {/* Sponsors */}
-            {event.sponsors.length > 0 && (
-              <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Sponsors
-                </Typography>
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                  {event.sponsors.map((sponsor, index) => (
-                    <Grid item key={index} xs={12}>
-                      <Typography variant="body1">{sponsor}</Typography>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Grid>
-            )}
+            {event.sponsors?.length > 0 && (
+  <Grid item xs={12}>
+    <Divider sx={{ my: 2 }} />
+    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+      Sponsors
+    </Typography>
+    <Grid container spacing={2} sx={{ mt: 1 }}>
+      {event.sponsors?.map((sponsor, index) => (
+        <Grid item key={index} xs={12}>
+          <Typography variant="body1">{sponsor}</Typography>
+        </Grid>
+      ))}
+    </Grid>
+  </Grid>
+)}
 
-            {/* Coordinators Contact */}
-            {event.coordinatorsContact.length > 0 && (
-              <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Coordinators Contact
-                </Typography>   
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                  {event.coordinatorsContact.map((coordinator, index) => (
-                    <Grid item key={index} xs={12} sm={6}>
-                      <Typography variant="body1">
-                        <strong>{coordinator.name}</strong> 📞 {coordinator.phone}
-                      </Typography>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Grid>
-            )}
+{event.coordinatorsContact?.length > 0 && (
+  <Grid item xs={12}>
+    <Divider sx={{ my: 2 }} />
+    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+      Coordinators Contact
+    </Typography>   
+    <Grid container spacing={2} sx={{ mt: 1 }}>
+      {event.coordinatorsContact?.map((coordinator, index) => (
+        <Grid item key={index} xs={12} sm={6}>
+          <Typography variant="body1">
+            <strong>{coordinator.name}</strong> 📞 {coordinator.phone}
+          </Typography>
+        </Grid>
+      ))}
+    </Grid>
+  </Grid>
+)}
 
-            {/* Event Images */}
-            {event.images?.length > 0 && (
-              <Grid item xs={12}>
-                <Divider sx={{ my: 2 }} />
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  Event Images
-                </Typography>
-                <Grid container spacing={2} sx={{ mt: 1 }}>
-                  {event.images.map((image, index) => (
-                    <Grid item key={index} xs={12} sm={6} md={4}>
-                      <img
-                        src={image}
-                        alt={`${index + 1}`}
-                        style={{ width: "100%", borderRadius: "8px", objectFit: "cover" }}
-                      />
-                    </Grid>
-                  ))}
-                </Grid>
-              </Grid>
-            )}
+{event.images?.length > 0 && (
+  <Grid item xs={12}>
+    <Divider sx={{ my: 2 }} />
+    <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+      Event Images
+    </Typography>
+    <Grid container spacing={2} sx={{ mt: 1 }}>
+      {event.images?.map((image, index) => (
+        <Grid item key={index} xs={12} sm={6} md={4}>
+          <img
+            src={image}
+            alt={`Event ${index + 1}`}
+            style={{ width: "100%", borderRadius: "8px", objectFit: "cover" }}
+          />
+        </Grid>
+      ))}
+    </Grid>
+  </Grid>
+)}
+
 
           </Grid>
         </Paper>
