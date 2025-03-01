@@ -209,22 +209,35 @@ const Booking = () => {
             </Typography>
           </Paper>
 
-          {/* Location */}
-          <Typography
-            variant="h6"
-            sx={{
-              mt: 3,
-              fontWeight: "600",
-              color: "#E0E0E0",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: { xs: "center", sm: "flex-start" },
-              gap: 1,
-              fontSize: { xs: "1rem", sm: "1.2rem" },
-            }}
-          >
-            📍 Location: <span style={{ color: "#81C784", fontWeight: "bold" }}>{event.location}</span>
-          </Typography>
+         {/* Location */}
+            <Typography
+              variant="h6"
+              sx={{
+                mt: 3,
+                fontWeight: "600",
+                color: "#E0E0E0",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: { xs: "center", sm: "flex-start" },
+                gap: 1,
+                fontSize: { xs: "0.9rem", sm: "1.1rem" }, 
+                whiteSpace: "nowrap", 
+                overflowX: "auto", 
+                maxWidth: "100%", 
+                p: 1, 
+              }}
+            >
+              📍{" "}
+              <span
+                style={{
+                  color: "#81C784",
+                  fontWeight: "bold",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {event.location}
+              </span>
+            </Typography>
               
           {/* Event Rules Section */}
           {event.rules && (
