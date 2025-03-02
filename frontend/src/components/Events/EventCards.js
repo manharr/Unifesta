@@ -24,7 +24,7 @@ const EventCards = ({ events, isUpcoming }) => {
             {/* Event Image */}
             <CardMedia
               component="img"
-              height="220"
+              height="240"
               image={
                 event.images[0]?.startsWith("http")
                   ? event.images[0] // Already full URL
