@@ -26,7 +26,7 @@ const Footer = () => {
           <Grid item xs={12} md={4} display="flex" justifyContent={{ xs: "center", md: "flex-start" }}>
             <Box
               component="img"
-              src="/logo1.png"
+              src="/logo.jpeg"
               alt="UniFesta Logo"
               sx={{
                 width: { xs: "200px", md: "280px" },
