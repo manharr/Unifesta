@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const EventCards = ({ events, isUpcoming }) => {  
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4}}>
+    <Container maxWidth="lg" >
 
     <Grid container spacing={5} justifyContent="center" sx={{ mt: 3 }}>
       {events.map((event, index) => (
