@@ -9,7 +9,7 @@ import { store } from './store';
 import { Container, Typography,  Alert } from '@mui/material';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 
-// Set the base URL for axios
+
 axios.defaults.baseURL = "https://unifesta.onrender.com";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
