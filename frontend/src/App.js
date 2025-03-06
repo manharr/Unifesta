@@ -71,7 +71,7 @@ function App() {
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      {/* Header and Footer only if NOT on Admin Dashboard */}
+
       {!isAdminRoute && <Header />}
       
       <ThemeProvider theme={theme}>
